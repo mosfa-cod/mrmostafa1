@@ -650,6 +650,7 @@ onAuthStateChanged(auth, async user=>{
     document.getElementById('sidebarRole').textContent=specLabel(teacherProfile.spec||'other');
     loadDashboard();
     loadSubjects();
+    loadAllSubjectsForSelect(); // تحميل كل مواد السنتر للـ dropdown فور الدخول
   }else{
     currentUser=null;
     document.getElementById('gate').classList.remove('hidden');
@@ -675,8 +676,8 @@ window.goPanel = function(i){
   document.getElementById('pageTitle').textContent=pageMeta[i][0];
   document.getElementById('pageSub').textContent=pageMeta[i][1];
   if(i===1) loadSubjects();
-  if(i===2){populateSubjSelect(); loadLessons();}
-  if(i===3){populateQuizSubj(); loadQuizList();}
+  if(i===2){ loadAllSubjectsForSelect(); loadLessons(); }
+  if(i===3){ loadAllSubjectsForSelect(); loadQuizList(); }
   if(i===4) loadChallenge();
   if(i===5) loadBroadcast();
   if(i===6) loadAnn();
@@ -760,7 +761,7 @@ window.addSubject = async function(){
     document.getElementById('subjDesc').value='';
     document.getElementById('subjIcon').value='';
     showToast('✅ تم نشر المادة للطلاب!');
-    loadSubjects(); loadDashboard();
+    loadSubjects(); loadDashboard(); loadAllSubjectsForSelect();
   }catch(e){showToast('❌ '+e.message);}
 };
 
@@ -783,15 +784,42 @@ window.editSubject = async function(id){
   }catch(e){showToast('❌ '+e.message);}
 };
 
-function populateSubjSelect(){
-  const sel=document.getElementById('lessonSubj');
-  const sel2=document.getElementById('filterLessonSubj');
-  sel.innerHTML='<option value="">— اختر المادة —</option>'+mySubjects.map(s=>`<option value="${s.id}">${esc(s.icon||'📚')} ${esc(s.title)}</option>`).join('');
-  sel2.innerHTML='<option value="">الكل</option>'+mySubjects.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('');
+/* allSubjects — كل مواد السنتر (للـ dropdown عند إضافة درس/اختبار)
+   مستقلة عن mySubjects اللي تعرض فقط مواد المدرس في قائمة "موادي" */
+let allSubjectsForSelect = [];
+
+async function loadAllSubjectsForSelect(){
+  try{
+    const snap = await getDocs(collection(db,'subjects'));
+    allSubjectsForSelect = [];
+    snap.forEach(d => allSubjectsForSelect.push({id:d.id,...d.data()}));
+    populateSubjSelect();
+    populateQuizSubj();
+  }catch(e){}
 }
+
+function populateSubjSelect(){
+  const sel  = document.getElementById('lessonSubj');
+  const sel2 = document.getElementById('filterLessonSubj');
+  // lessonSubj → كل المواد بلا تصفية ليختار أي مدرس أي مادة
+  sel.innerHTML = '<option value="">— اختر المادة —</option>'
+    + allSubjectsForSelect.map(s =>
+        `<option value="${s.id}">${esc(s.icon||'📚')} ${esc(s.title)}${s.teacherName?' — '+esc(s.teacherName):''}</option>`
+      ).join('');
+  // filterLessonSubj → نفس الكل (للفلترة في قائمة دروسي)
+  sel2.innerHTML = '<option value="">الكل</option>'
+    + allSubjectsForSelect.map(s =>
+        `<option value="${s.id}">${esc(s.title)}</option>`
+      ).join('');
+}
+
 function populateQuizSubj(){
-  const sel=document.getElementById('quizSubj');
-  sel.innerHTML='<option value="">— اختر المادة —</option>'+mySubjects.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('');
+  const sel = document.getElementById('quizSubj');
+  // كل المواد أيضاً ليضيف أي مدرس اختباراً على أي مادة
+  sel.innerHTML = '<option value="">— اختر المادة —</option>'
+    + allSubjectsForSelect.map(s =>
+        `<option value="${s.id}">${esc(s.title)}${s.teacherName?' — '+esc(s.teacherName):''}</option>`
+      ).join('');
 }
 
 /* ═══ LESSONS ═══ */
