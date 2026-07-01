@@ -564,10 +564,16 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 /* ═══ STATE ═══ */
+/* ⚠️ غيّر هذا الإيميل إلى إيميلك الشخصي كمدير — يرى كل البيانات */
+const ADMIN_EMAIL = 'mostafa@example.com';
+
 let currentUser = null;
 let teacherProfile = {};
 let mySubjects = [];
 let quizQCount = 0;
+
+/* يتحقق هل المستخدم الحالي هو المدير أم مدرس عادي */
+const isAdmin = () => currentUser && currentUser.email === ADMIN_EMAIL;
 
 /* ═══ UTILS ═══ */
 const esc = s => String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -680,15 +686,25 @@ window.goPanel = function(i){
 async function loadDashboard(){
   if(!currentUser) return;
   try{
-    const snap=await getDocs(query(collection(db,'subjects'),where('teacherId','==',currentUser.uid)));
+    // المدير يرى كل المواد، المدرس يرى موادة فقط
+    const subjSnap = isAdmin()
+      ? await getDocs(collection(db,'subjects'))
+      : await getDocs(query(collection(db,'subjects'),where('teacherId','==',currentUser.uid)));
     mySubjects=[];
     let totalLessons=0;
-    snap.forEach(d=>{const s={id:d.id,...d.data()};mySubjects.push(s);totalLessons+=(s.lessonsCount||0);});
+    subjSnap.forEach(d=>{const s={id:d.id,...d.data()};mySubjects.push(s);totalLessons+=(s.lessonsCount||0);});
     document.getElementById('ds0').textContent=mySubjects.length;
     document.getElementById('ds1').textContent=totalLessons;
-    const qSnap=await getDocs(query(collection(db,'quizzes'),where('teacherId','==',currentUser.uid)));
+    const qSnap = isAdmin()
+      ? await getDocs(collection(db,'quizzes'))
+      : await getDocs(query(collection(db,'quizzes'),where('teacherId','==',currentUser.uid)));
     document.getElementById('ds2').textContent=qSnap.size;
     document.getElementById('ds3').textContent=mySubjects.length*10+qSnap.size*5;
+    // أضف شارة "مدير" في الشريط الجانبي لو كان المستخدم المدير
+    if(isAdmin()){
+      const roleEl=document.getElementById('sidebarRole');
+      roleEl.innerHTML='<span style="color:var(--gold);font-weight:900;">👑 مدير المنصة</span>';
+    }
   }catch(e){}
 }
 
@@ -697,16 +713,23 @@ async function loadSubjects(){
   if(!currentUser) return;
   const list=document.getElementById('subjList');
   try{
-    const snap=await getDocs(query(collection(db,'subjects'),where('teacherId','==',currentUser.uid)));
+    // المدير يرى كل المواد لكل المدرسين، المدرس يرى موادة فقط
+    const snap = isAdmin()
+      ? await getDocs(collection(db,'subjects'))
+      : await getDocs(query(collection(db,'subjects'),where('teacherId','==',currentUser.uid)));
     mySubjects=[];
     snap.forEach(d=>mySubjects.push({id:d.id,...d.data()}));
     document.getElementById('subjCountBadge').textContent=mySubjects.length;
-    if(!mySubjects.length){list.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div>لم تضف أي مادة بعد</div></div>';return;}
+    if(!mySubjects.length){
+      list.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div>'+(isAdmin()?'لا توجد مواد في المنصة بعد':'لم تضف أي مادة بعد')+'</div></div>';
+      return;
+    }
     list.innerHTML=mySubjects.map(s=>`
       <div class="subj-item">
         <div class="subj-icon">${s.icon||'📚'}</div>
         <div class="subj-info">
-          <div class="subj-name">${esc(s.title)}</div>
+          <div class="subj-name">${esc(s.title)}${isAdmin()&&s.teacherName?` <span style="font-size:11px;color:var(--text3);font-weight:600;">— ${esc(s.teacherName)}</span>`:''}
+          </div>
           <div class="subj-meta">${catLabel(s.category)} · ${s.lessonsCount||0} درس · ${s.storiesCount||0} قصة</div>
         </div>
         <div class="subj-actions">
@@ -791,6 +814,8 @@ window.addLesson = async function(){
     await addDoc(collection(db,'lessons'),{
       subjectId:subjId,type,icon,title,desc,videoUrl:videoUrl||'',
       teacherId:currentUser.uid,
+      teacherEmail:currentUser.email,
+      teacherName:teacherProfile.name||currentUser.email,
       createdAt:serverTimestamp()
     });
     // update lessons count
@@ -817,9 +842,19 @@ window.loadLessons = async function(){
   const filterSubj=document.getElementById('filterLessonSubj').value;
   list.innerHTML='<div style="color:var(--text3);padding:10px;">⏳ جارٍ التحميل...</div>';
   try{
-    let q=query(collection(db,'lessons'),where('teacherId','==',currentUser.uid));
-    if(filterSubj) q=query(collection(db,'lessons'),where('teacherId','==',currentUser.uid),where('subjectId','==',filterSubj));
-    const snap=await getDocs(q);
+    let q;
+    if(isAdmin()){
+      // المدير: يرى كل الدروس بدون تصفية، أو مفلتر بالمادة فقط
+      q = filterSubj
+        ? query(collection(db,'lessons'), where('subjectId','==',filterSubj))
+        : query(collection(db,'lessons'));
+    } else {
+      // المدرس: يرى دروسه الخاصة فقط بناءً على الإيميل
+      q = filterSubj
+        ? query(collection(db,'lessons'), where('teacherEmail','==',currentUser.email), where('subjectId','==',filterSubj))
+        : query(collection(db,'lessons'), where('teacherEmail','==',currentUser.email));
+    }
+    const snap = await getDocs(q);
     document.getElementById('lessonCountBadge').textContent=snap.size;
     if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div>لا توجد دروس بعد</div></div>';return;}
     const rows=[];
@@ -833,7 +868,10 @@ window.loadLessons = async function(){
             <span style="font-size:22px;">${r.icon||'📖'}</span>
             <div>
               <div style="font-weight:800;font-size:14px;">${esc(r.title)}</div>
-              <div style="font-size:11px;color:var(--text2);">${typeLabel[r.type]||r.type} · ${s?esc(s.title):'غير محدد'}</div>
+              <div style="font-size:11px;color:var(--text2);">
+                ${typeLabel[r.type]||r.type} · ${s?esc(s.title):'غير محدد'}
+                ${isAdmin()&&r.teacherName?` · <span style="color:var(--gold);">👨‍🏫 ${esc(r.teacherName)}</span>`:''}
+              </div>
             </div>
           </div>
           <div style="display:flex;gap:6px;">
@@ -918,7 +956,10 @@ window.saveQuiz = async function(){
 window.loadQuizList = async function(){
   const list=document.getElementById('quizList');
   try{
-    const snap=await getDocs(query(collection(db,'quizzes'),where('teacherId','==',currentUser.uid)));
+    // المدير يرى كل الاختبارات، المدرس يرى اختباراته فقط
+    const snap = isAdmin()
+      ? await getDocs(collection(db,'quizzes'))
+      : await getDocs(query(collection(db,'quizzes'),where('teacherId','==',currentUser.uid)));
     if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">❓</div><div>لا توجد اختبارات</div></div>';return;}
     const rows=[];
     snap.forEach(d=>rows.push({id:d.id,...d.data()}));
@@ -927,7 +968,10 @@ window.loadQuizList = async function(){
       return`<div class="lesson-row">
         <div class="lesson-row-head">
           <div><div style="font-weight:800;">❓ ${esc(r.title)}</div>
-            <div style="font-size:11px;color:var(--text2);">${(r.questions||[]).length} سؤال · ${s?esc(s.title):'غير محدد'}</div>
+            <div style="font-size:11px;color:var(--text2);">
+              ${(r.questions||[]).length} سؤال · ${s?esc(s.title):'غير محدد'}
+              ${isAdmin()&&r.teacherName?` · <span style="color:var(--gold);">👨‍🏫 ${esc(r.teacherName)}</span>`:''}
+            </div>
           </div>
           <button class="btn btn-danger btn-sm" onclick="deleteQuiz('${r.id}')">🗑️ حذف</button>
         </div>
