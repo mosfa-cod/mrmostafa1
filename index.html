@@ -1,0 +1,481 @@
+
+Index academy · HTML
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>منصة مستر مصطفى التعليمية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════ */
+:root{
+  --p:#7C3AED;--p2:#5B21B6;--p3:#EDE9FE;
+  --gold:#F59E0B;--teal:#10B981;--rose:#F43F5E;
+  --bg:#FFFFFF;--bg2:#F8F7FF;--bg3:#EDE9FE;
+  --card:#FFFFFF;--card2:#F3F4F6;
+  --text:#1F2937;--text2:#6B7280;--text3:#9CA3AF;
+  --border:rgba(0,0,0,.08);
+  --shadow:0 4px 24px rgba(124,58,237,.10);
+  --shadow2:0 2px 12px rgba(0,0,0,.06);
+  --r:16px;--r2:24px;--r3:12px;
+  --tr:.35s cubic-bezier(.4,0,.2,1);
+}
+[data-mode=dark]{
+  --bg:#0F0A1E;--bg2:#1A1035;--bg3:#2D1F5E;
+  --card:#1E1540;--card2:#251B4E;
+  --text:#F1F0FF;--text2:#C4B5FD;--text3:#7C6FCD;
+  --border:rgba(255,255,255,.07);
+  --shadow:0 4px 24px rgba(124,58,237,.25);
+  --shadow2:0 2px 12px rgba(0,0,0,.35);
+}
+[data-theme=blue]{--p:#2563EB;--p2:#1E40AF;--p3:#DBEAFE;--bg3:#DBEAFE;}
+[data-theme=green]{--p:#059669;--p2:#047857;--p3:#D1FAE5;--bg3:#D1FAE5;}
+[data-theme=rose]{--p:#E11D48;--p2:#BE123C;--p3:#FFE4E6;--bg3:#FFE4E6;}
+ 
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
+  transition:background var(--tr),color var(--tr);line-height:1.6;overflow-x:hidden;}
+ 
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--p);border-radius:3px;}
+ 
+/* ═══ NAV ═══ */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.85);
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--border);
+  padding:0 24px;display:flex;align-items:center;justify-content:space-between;
+  height:64px;transition:background var(--tr);}
+[data-mode=dark] .nav{background:rgba(15,10,30,.85);}
+.nav-brand{display:flex;align-items:center;gap:10px;}
+.nav-logo{width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,var(--p),var(--p2));
+  display:flex;align-items:center;justify-content:center;font-size:20px;}
+.nav-title{font-size:16px;font-weight:800;color:var(--p);}
+.nav-sub{font-size:11px;color:var(--text2);}
+.nav-controls{display:flex;align-items:center;gap:8px;}
+.ctrl-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);
+  background:var(--card);cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:16px;transition:all var(--tr);color:var(--text);}
+.ctrl-btn:hover{border-color:var(--p);background:var(--p3);}
+.theme-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);
+  cursor:pointer;transition:transform .2s;}
+.theme-dot:hover{transform:scale(1.2);}
+.nav-admin-btn{padding:8px 16px;border-radius:10px;background:var(--p);color:#fff;
+  font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:inherit;
+  transition:all .2s;}
+.nav-admin-btn:hover{background:var(--p2);transform:translateY(-1px);}
+ 
+/* ═══ HERO ═══ */
+.hero{min-height:360px;background:linear-gradient(135deg,var(--p) 0%,var(--p2) 60%,#1E1B4B 100%);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:60px 24px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 120%,rgba(255,255,255,.08) 0%,transparent 70%);}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;}
+.hero-orb1{width:300px;height:300px;background:rgba(255,255,255,.06);top:-100px;right:-80px;}
+.hero-orb2{width:200px;height:200px;background:rgba(245,158,11,.12);bottom:-60px;left:-60px;}
+.hero-content{position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.25);border-radius:30px;padding:5px 16px;
+  font-size:12px;font-weight:700;color:rgba(255,255,255,.9);margin-bottom:20px;
+  backdrop-filter:blur(10px);}
+.hero h1{font-size:clamp(22px,5vw,40px);font-weight:900;color:#fff;
+  text-shadow:0 2px 20px rgba(0,0,0,.2);margin-bottom:12px;line-height:1.3;}
+.hero p{font-size:clamp(14px,2.5vw,18px);color:rgba(255,255,255,.8);
+  max-width:500px;margin:0 auto 28px;}
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;}
+.hero-stat{text-align:center;}
+.hero-stat-val{font-size:28px;font-weight:900;color:#fff;}
+.hero-stat-lbl{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;}
+.hero-search{display:flex;gap:8px;margin-bottom:28px;max-width:420px;margin-left:auto;margin-right:auto;}
+.search-input{flex:1;padding:12px 18px;border-radius:12px;border:none;
+  background:rgba(255,255,255,.15);backdrop-filter:blur(10px);color:#fff;
+  font-family:inherit;font-size:14px;outline:none;border:1px solid rgba(255,255,255,.25);}
+.search-input::placeholder{color:rgba(255,255,255,.6);}
+.search-btn{padding:12px 20px;border-radius:12px;background:rgba(255,255,255,.9);
+  border:none;color:var(--p);font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;}
+ 
+/* ═══ SECTIONS ═══ */
+.section{padding:56px 24px;max-width:1100px;margin:0 auto;}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px;}
+.section-title{font-size:clamp(18px,3vw,24px);font-weight:900;color:var(--text);}
+.section-title span{color:var(--p);}
+.section-line{width:48px;height:4px;border-radius:2px;background:var(--p);margin-top:6px;}
+.see-all{padding:8px 18px;border-radius:10px;border:1.5px solid var(--p);
+  background:transparent;color:var(--p);font-size:13px;font-weight:700;
+  cursor:pointer;font-family:inherit;transition:all .2s;}
+.see-all:hover{background:var(--p);color:#fff;}
+ 
+/* ═══ FILTER TABS ═══ */
+.filter-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.ftab{padding:7px 18px;border-radius:30px;border:1.5px solid var(--border);
+  background:var(--card);color:var(--text2);font-size:13px;font-weight:700;
+  cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap;}
+.ftab.active,.ftab:hover{background:var(--p);color:#fff;border-color:var(--p);}
+ 
+/* ═══ SUBJECTS GRID ═══ */
+.subjects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+.subject-card{background:var(--card);border-radius:var(--r2);padding:24px;
+  border:1px solid var(--border);box-shadow:var(--shadow2);
+  transition:all var(--tr);cursor:pointer;position:relative;overflow:hidden;}
+.subject-card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;
+  border-radius:0 var(--r2) 0 100%;
+  background:linear-gradient(135deg,var(--p3),transparent);transition:all var(--tr);}
+.subject-card:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:var(--p);}
+.subject-card:hover::before{width:120px;height:120px;}
+.subject-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.subject-icon{width:56px;height:56px;border-radius:16px;
+  background:linear-gradient(135deg,var(--p3),var(--bg3));
+  display:flex;align-items:center;justify-content:center;font-size:28px;}
+.subject-badge{padding:4px 10px;border-radius:8px;font-size:10px;font-weight:800;
+  background:var(--p3);color:var(--p);}
+.subject-title{font-size:16px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.subject-desc{font-size:13px;color:var(--text2);margin-bottom:14px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.subject-teacher{display:flex;align-items:center;gap:8px;padding-top:12px;
+  border-top:1px solid var(--border);font-size:12px;color:var(--text2);}
+.teacher-avatar{width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--p),var(--p2));
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:12px;font-weight:800;flex-shrink:0;}
+.subject-stats{display:flex;gap:14px;margin-bottom:14px;}
+.stat-chip{display:flex;align-items:center;gap:4px;font-size:12px;
+  color:var(--text2);background:var(--bg2);padding:4px 10px;border-radius:8px;}
+ 
+/* ═══ CHALLENGE ═══ */
+.challenge-wrap{background:linear-gradient(135deg,var(--p),var(--p2));
+  border-radius:var(--r2);padding:32px;color:#fff;position:relative;overflow:hidden;
+  max-width:680px;margin:0 auto;}
+.challenge-wrap::before{content:'🎯';position:absolute;right:-10px;top:-10px;
+  font-size:120px;opacity:.08;}
+.challenge-tag{display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.15);border-radius:20px;padding:4px 14px;
+  font-size:11px;font-weight:700;margin-bottom:14px;border:1px solid rgba(255,255,255,.2);}
+.challenge-title{font-size:22px;font-weight:900;margin-bottom:8px;}
+.challenge-desc{font-size:14px;opacity:.85;margin-bottom:20px;}
+.challenge-pts{display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.2);border-radius:12px;padding:8px 20px;
+  font-size:18px;font-weight:900;}
+.challenge-empty{text-align:center;padding:32px;color:var(--text3);}
+ 
+/* ═══ TESTIMONIALS ═══ */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+.test-card{background:var(--card);border-radius:var(--r2);padding:22px;
+  border:1px solid var(--border);box-shadow:var(--shadow2);transition:all var(--tr);}
+.test-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
+.test-stars{color:var(--gold);font-size:18px;margin-bottom:10px;}
+.test-text{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;
+  font-style:italic;}
+.test-author{display:flex;align-items:center;gap:10px;padding-top:14px;
+  border-top:1px solid var(--border);}
+.test-avatar{width:42px;height:42px;border-radius:50%;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:16px;flex-shrink:0;}
+.test-name{font-weight:800;font-size:14px;}
+.test-role{font-size:12px;color:var(--text3);}
+ 
+/* ═══ SKELETON ═══ */
+.skel{background:linear-gradient(90deg,var(--bg2) 25%,var(--card2) 50%,var(--bg2) 75%);
+  background-size:200% 100%;animation:skelAnim 1.4s infinite;border-radius:8px;}
+@keyframes skelAnim{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.skel-card{height:200px;border-radius:var(--r2);}
+ 
+/* ═══ EMPTY ═══ */
+.empty-state{text-align:center;padding:60px 24px;color:var(--text3);}
+.empty-icon{font-size:56px;margin-bottom:12px;}
+.empty-text{font-size:15px;font-weight:700;}
+.empty-sub{font-size:13px;margin-top:6px;}
+ 
+/* ═══ TOAST ═══ */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--p);color:#fff;padding:12px 24px;border-radius:14px;
+  font-size:13px;font-weight:700;z-index:9999;transition:transform .38s;
+  box-shadow:0 8px 28px rgba(0,0,0,.3);white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+ 
+/* ═══ FOOTER ═══ */
+footer{background:var(--bg2);border-top:1px solid var(--border);
+  padding:32px 24px;text-align:center;}
+footer p{font-size:13px;color:var(--text3);}
+footer strong{color:var(--p);}
+ 
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:640px){
+  .nav-sub,.nav-admin-btn{display:none;}
+  .hero h1{font-size:22px;}
+  .section{padding:36px 16px;}
+  .hero-stat{gap:16px;}
+}
+</style>
+</head>
+<body data-mode="light" data-theme="purple">
+ 
+<div class="toast" id="toast"></div>
+ 
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo">🎓</div>
+    <div>
+      <div class="nav-title">منصة مستر مصطفى</div>
+      <div class="nav-sub">منصة التعلّم التفاعلية</div>
+    </div>
+  </div>
+  <div class="nav-controls">
+    <div class="ctrl-btn" onclick="toggleMode()" id="modeBtn" title="تبديل الوضع">🌙</div>
+    <div class="theme-dot" style="background:#7C3AED" data-theme="purple" onclick="setTheme('purple')" title="بنفسجي"></div>
+    <div class="theme-dot" style="background:#2563EB" data-theme="blue" onclick="setTheme('blue')" title="أزرق"></div>
+    <div class="theme-dot" style="background:#059669" data-theme="green" onclick="setTheme('green')" title="أخضر"></div>
+    <div class="theme-dot" style="background:#E11D48" data-theme="rose" onclick="setTheme('rose')" title="وردي"></div>
+    <button class="nav-admin-btn" onclick="location.href='admin.html'">👨‍🏫 لوحة المعلم</button>
+  </div>
+</nav>
+ 
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-orb hero-orb1"></div>
+  <div class="hero-orb hero-orb2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">✨ منصة تعليمية متكاملة</div>
+    <h1>تعلّم بطريقة ذكية ومميّزة</h1>
+    <p>دروس تفاعلية، قصص ممتعة، وتحدّيات يومية — لكل طالب أسلوب تعلّم مختلف</p>
+    <div class="hero-search">
+      <input type="text" class="search-input" id="searchInput" placeholder="🔍 ابحث عن مادة أو درس...">
+      <button class="search-btn" onclick="doSearch()">بحث</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-val" id="statSubjects">0</div><div class="hero-stat-lbl">مادة دراسية</div></div>
+      <div class="hero-stat"><div class="hero-stat-val" id="statLessons">0</div><div class="hero-stat-lbl">درس تفاعلي</div></div>
+      <div class="hero-stat"><div class="hero-stat-val" id="statTeachers">0</div><div class="hero-stat-lbl">معلم متخصص</div></div>
+    </div>
+  </div>
+</div>
+ 
+<!-- ══ SUBJECTS ══ -->
+<div class="section">
+  <div class="section-head">
+    <div>
+      <div class="section-title">📚 المواد <span>الدراسية</span></div>
+      <div class="section-line"></div>
+    </div>
+    <button class="see-all" onclick="showAll()">عرض الكل</button>
+  </div>
+  <div class="filter-tabs" id="filterTabs">
+    <button class="ftab active" onclick="filterBy('all',this)">الكل</button>
+    <button class="ftab" onclick="filterBy('arabic',this)">🖊️ عربي</button>
+    <button class="ftab" onclick="filterBy('english',this)">🇬🇧 إنجليزي</button>
+    <button class="ftab" onclick="filterBy('math',this)">🔢 رياضيات</button>
+    <button class="ftab" onclick="filterBy('science',this)">🔬 علوم</button>
+    <button class="ftab" onclick="filterBy('other',this)">📦 أخرى</button>
+  </div>
+  <div class="subjects-grid" id="subjectsGrid">
+    <div class="skel skel-card"></div>
+    <div class="skel skel-card"></div>
+    <div class="skel skel-card"></div>
+  </div>
+</div>
+ 
+<!-- ══ CHALLENGE ══ -->
+<div class="section" style="padding-top:0;">
+  <div class="section-head">
+    <div>
+      <div class="section-title">🎯 تحدّي <span>اليوم</span></div>
+      <div class="section-line"></div>
+    </div>
+  </div>
+  <div id="challengeWrap"><div class="challenge-empty">⏳ جارٍ التحميل...</div></div>
+</div>
+ 
+<!-- ══ TESTIMONIALS ══ -->
+<div class="section" style="background:var(--bg2);max-width:100%;padding:56px 0;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 24px;">
+    <div class="section-head">
+      <div>
+        <div class="section-title">💬 ماذا يقول <span>أولياء الأمور</span></div>
+        <div class="section-line"></div>
+      </div>
+    </div>
+    <div class="testimonials-grid" id="testimonialsGrid">
+      <div class="skel skel-card"></div>
+      <div class="skel skel-card"></div>
+      <div class="skel skel-card"></div>
+    </div>
+  </div>
+</div>
+ 
+<footer>
+  <p>صُمِّمت بـ ❤️ لخدمة العملية التعليمية · <strong>منصة مستر مصطفى</strong> © 2026</p>
+</footer>
+ 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, getDoc, query, where, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+ 
+/* ── Firebase Config ── */
+const app = initializeApp({
+  apiKey:"AIzaSyBMvIzV131KdAjuHS8B6tCUBsmaGgloLUY",
+  authDomain:"mostafa-acdemy-2645a.firebaseapp.com",
+  projectId:"mostafa-acdemy-2645a",
+  storageBucket:"mostafa-acdemy-2645a.firebasestorage.app",
+  messagingSenderId:"371101699494",
+  appId:"1:371101699494:web:3e79c870941afef5179367"
+});
+const db = getFirestore(app);
+ 
+/* ── State ── */
+let allSubjects = [];
+let activeFilter = 'all';
+ 
+/* ── Theme / Mode ── */
+const root = document.documentElement;
+const saved = localStorage;
+if(saved.getItem('mode')) root.setAttribute('data-mode', saved.getItem('mode'));
+if(saved.getItem('theme')) root.setAttribute('data-theme', saved.getItem('theme'));
+document.getElementById('modeBtn').textContent = root.getAttribute('data-mode')==='dark' ? '☀️' : '🌙';
+ 
+window.toggleMode = function(){
+  const m = root.getAttribute('data-mode')==='dark' ? 'light' : 'dark';
+  root.setAttribute('data-mode', m);
+  saved.setItem('mode', m);
+  document.getElementById('modeBtn').textContent = m==='dark' ? '☀️' : '🌙';
+};
+window.setTheme = function(t){
+  root.setAttribute('data-theme', t);
+  saved.setItem('theme', t);
+};
+ 
+/* ── Toast ── */
+window.showToast = function(msg){
+  const t=document.getElementById('toast'); t.textContent=msg;
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800);
+};
+ 
+/* ── Load Subjects ── */
+async function loadSubjects(){
+  const grid = document.getElementById('subjectsGrid');
+  try{
+    const snap = await getDocs(query(collection(db,'subjects')));
+    allSubjects = [];
+    snap.forEach(d=>allSubjects.push({id:d.id,...d.data()}));
+    const teachers = new Set(allSubjects.map(s=>s.teacherId).filter(Boolean));
+    document.getElementById('statSubjects').textContent = allSubjects.length;
+    document.getElementById('statTeachers').textContent = teachers.size;
+    const totalLessons = allSubjects.reduce((s,sub)=>s+(sub.lessonsCount||0),0);
+    document.getElementById('statLessons').textContent = totalLessons;
+    renderSubjects(allSubjects);
+  }catch(e){
+    grid.innerHTML='<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-text">تعذّر تحميل المواد</div><div class="empty-sub">'+e.message+'</div></div>';
+  }
+}
+ 
+function renderSubjects(list){
+  const grid=document.getElementById('subjectsGrid');
+  if(!list.length){
+    grid.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📭</div><div class="empty-text">لا توجد مواد بعد</div><div class="empty-sub">سيضيف المعلمون المواد قريباً</div></div>';
+    return;
+  }
+  grid.innerHTML = list.map(s=>`
+    <div class="subject-card" onclick="viewSubject('${s.id}')">
+      <div class="subject-top">
+        <div class="subject-icon">${s.icon||'📚'}</div>
+        <div class="subject-badge">${catLabel(s.category)}</div>
+      </div>
+      <div class="subject-title">${esc(s.title||'بدون عنوان')}</div>
+      <div class="subject-desc">${esc(s.desc||s.description||'')}</div>
+      <div class="subject-stats">
+        <div class="stat-chip">📖 ${s.lessonsCount||0} درس</div>
+        <div class="stat-chip">📕 ${s.storiesCount||0} قصة</div>
+      </div>
+      <div class="subject-teacher">
+        <div class="teacher-avatar">${(s.teacherName||'م').charAt(0)}</div>
+        <span>${esc(s.teacherName||'معلم غير محدد')}</span>
+      </div>
+    </div>`).join('');
+}
+ 
+function catLabel(c){const m={arabic:'عربي',english:'إنجليزي',math:'رياضيات',science:'علوم',other:'أخرى'};return m[c]||c||'عام';}
+ 
+window.filterBy = function(cat,btn){
+  activeFilter=cat;
+  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = cat==='all' ? allSubjects : allSubjects.filter(s=>(s.category||'other')===cat);
+  renderSubjects(filtered);
+};
+ 
+window.showAll = function(){ filterBy('all', document.querySelector('.ftab')); };
+ 
+window.doSearch = function(){
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  if(!q){ renderSubjects(allSubjects); return; }
+  const res = allSubjects.filter(s=>(s.title||'').toLowerCase().includes(q)||(s.desc||'').toLowerCase().includes(q));
+  renderSubjects(res);
+};
+ 
+document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+ 
+window.viewSubject = function(id){
+  showToast('📖 جارٍ فتح المادة...');
+  setTimeout(()=>{ location.href='subject.html?id='+id; },600);
+};
+ 
+/* ── Load Challenge ── */
+async function loadChallenge(){
+  const wrap=document.getElementById('challengeWrap');
+  try{
+    const snap=await getDoc(doc(db,'challenges','today'));
+    if(snap.exists()){
+      const c=snap.data();
+      if(c.active===false){ wrap.innerHTML='<div class="challenge-empty">💤 لا يوجد تحدٍّ اليوم</div>'; return; }
+      wrap.innerHTML=`
+        <div class="challenge-wrap">
+          <div class="challenge-tag">⚡ تحدي اليوم</div>
+          <div class="challenge-title">${esc(c.title||'تحدي اليوم')}</div>
+          <div class="challenge-desc">${esc(c.description||'')}</div>
+          <div class="challenge-pts">🏅 +${c.points||0} نقطة</div>
+        </div>`;
+    }else{
+      wrap.innerHTML='<div class="challenge-empty"><div class="empty-icon">🎯</div><div class="empty-text">لا يوجد تحدٍّ اليوم بعد</div></div>';
+    }
+  }catch(e){ wrap.innerHTML=''; }
+}
+ 
+/* ── Load Testimonials ── */
+async function loadTestimonials(){
+  const grid=document.getElementById('testimonialsGrid');
+  try{
+    const snap=await getDocs(collection(db,'testimonials'));
+    if(snap.empty){ grid.innerHTML=''; return; }
+    grid.innerHTML='';
+    snap.forEach(d=>{
+      const t={id:d.id,...d.data()};
+      if(t.approved===false) return;
+      const init=(t.name||'؟').trim().charAt(0);
+      const stars='★'.repeat(Math.min(5,t.rating||5))+'☆'.repeat(5-Math.min(5,t.rating||5));
+      grid.innerHTML+=`
+        <div class="test-card">
+          <div class="test-stars">${stars}</div>
+          <div class="test-text">"${esc(t.text||'')}"</div>
+          <div class="test-author">
+            <div class="test-avatar" style="background:${t.avatarColor||'var(--p)'}">${init}</div>
+            <div><div class="test-name">${esc(t.name||'')}</div><div class="test-role">${esc(t.role||'')}</div></div>
+          </div>
+        </div>`;
+    });
+  }catch(e){}
+}
+ 
+function esc(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+ 
+/* ── Init ── */
+loadSubjects();
+loadChallenge();
+loadTestimonials();
+</script>
+</body>
+</html>
