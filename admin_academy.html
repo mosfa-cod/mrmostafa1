@@ -1,6 +1,4 @@
-
-
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -28,7 +26,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
   transition:background var(--tr),color var(--tr);min-height:100vh;}
- 
+
 /* ═══ LOGIN ═══ */
 .gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;
   justify-content:center;background:linear-gradient(135deg,var(--p),var(--p2));
@@ -56,11 +54,11 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
 .gate-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,.45);}
 .gate-btn:active{transform:translateY(0);}
 .gate-err{margin-top:10px;font-size:12px;color:var(--rose);font-weight:700;text-align:center;min-height:18px;}
- 
+
 /* ═══ SHELL ═══ */
 .shell{display:none;min-height:100vh;}
 .shell.show{display:flex;}
- 
+
 /* ═══ SIDEBAR ═══ */
 .sidebar{width:240px;min-height:100vh;background:var(--card);border-left:1px solid var(--border);
   display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0;}
@@ -84,7 +82,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
 .logout-btn{width:100%;padding:10px;border-radius:10px;background:rgba(244,63,94,.1);
   border:1px solid rgba(244,63,94,.2);color:var(--rose);font-size:13px;font-weight:700;
   cursor:pointer;font-family:inherit;}
- 
+
 /* ═══ MAIN ═══ */
 .main{flex:1;overflow-y:auto;padding:24px;}
 .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
@@ -94,12 +92,12 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
   background:var(--card);cursor:pointer;display:flex;align-items:center;
   justify-content:center;font-size:16px;color:var(--text);transition:all .2s;}
 .ctrl-btn:hover{border-color:var(--p);background:var(--p3);}
- 
+
 /* ═══ PANELS ═══ */
 .panel{display:none;animation:fadeIn .3s;}
 .panel.show{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
- 
+
 /* ═══ STATS ROW ═══ */
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px;}
 .stat-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);
@@ -107,7 +105,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
 .stat-icon{font-size:26px;margin-bottom:8px;}
 .stat-val{font-size:28px;font-weight:900;color:var(--p);}
 .stat-lbl{font-size:12px;color:var(--text2);font-weight:700;}
- 
+
 /* ═══ CARD ═══ */
 .card{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);
   padding:22px;box-shadow:var(--shadow2);margin-bottom:18px;}
@@ -115,7 +113,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
   display:flex;align-items:center;gap:8px;}
 .card-title .badge{padding:3px 10px;border-radius:8px;font-size:10px;font-weight:800;
   background:var(--p3);color:var(--p);}
- 
+
 /* ═══ FORM ═══ */
 .form-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
 .form-group{flex:1;min-width:180px;}
@@ -126,7 +124,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--p);}
 .form-textarea{resize:vertical;min-height:80px;}
 .form-input[dir=ltr]{direction:ltr;text-align:left;}
- 
+
 /* ═══ BUTTONS ═══ */
 .btn{padding:10px 20px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;
   font-size:13px;font-weight:800;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
@@ -139,7 +137,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
 .btn-sm{padding:6px 12px;font-size:11px;border-radius:9px;}
 .btn-ghost{background:var(--bg);border:1.5px solid var(--border);color:var(--text2);}
 .btn-ghost:hover{border-color:var(--p);color:var(--p);}
- 
+
 /* ═══ TABLE ═══ */
 .table-wrap{overflow-x:auto;border-radius:var(--r);}
 table{width:100%;border-collapse:collapse;font-size:13px;}
@@ -151,13 +149,13 @@ tr:hover td{background:var(--p3);}
 .chip-on{background:rgba(16,185,129,.12);color:var(--teal);}
 .chip-off{background:rgba(244,63,94,.12);color:var(--rose);}
 .chip-p{background:var(--p3);color:var(--p);}
- 
+
 /* ═══ LESSON ROWS ═══ */
 .lesson-row{background:var(--bg);border:1px solid var(--border);border-radius:14px;
   padding:14px;margin-bottom:10px;}
 .lesson-row-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 .row-num{font-size:11px;color:var(--text3);font-weight:800;}
- 
+
 /* ═══ SUBJECTS LIST ═══ */
 .subj-item{display:flex;align-items:center;gap:14px;padding:14px;
   background:var(--bg);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;
@@ -169,22 +167,22 @@ tr:hover td{background:var(--p3);}
 .subj-name{font-size:14px;font-weight:800;}
 .subj-meta{font-size:12px;color:var(--text2);margin-top:2px;}
 .subj-actions{display:flex;gap:6px;}
- 
+
 /* ═══ EMPTY ═══ */
 .empty{text-align:center;padding:40px;color:var(--text3);}
 .empty-icon{font-size:48px;margin-bottom:10px;}
- 
+
 /* ═══ TOAST ═══ */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
   background:var(--p);color:#fff;padding:12px 24px;border-radius:14px;
   font-size:13px;font-weight:700;z-index:9999;transition:transform .38s;
   box-shadow:0 8px 28px rgba(0,0,0,.3);white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
- 
+
 /* ═══ PROGRESS ═══ */
 .progress-bar{height:6px;border-radius:3px;background:var(--border);overflow:hidden;margin:4px 0;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--teal));transition:width .5s;}
- 
+
 @media(max-width:768px){
   .sidebar{display:none;}
   .main{padding:16px;}
@@ -192,9 +190,9 @@ tr:hover td{background:var(--p3);}
 </style>
 </head>
 <body data-mode="light">
- 
+
 <div class="toast" id="toast"></div>
- 
+
 <!-- ══ LOGIN GATE ══ -->
 <div class="gate" id="gate">
   <div class="gate-box">
@@ -205,7 +203,7 @@ tr:hover td{background:var(--p3);}
       <button class="gate-tab active" onclick="switchAuthTab('login',this)">تسجيل الدخول</button>
       <button class="gate-tab" onclick="switchAuthTab('register',this)">تسجيل معلم جديد</button>
     </div>
- 
+
     <!-- Login form -->
     <div id="loginForm">
       <div class="form-group">
@@ -218,7 +216,7 @@ tr:hover td{background:var(--p3);}
       </div>
       <button class="gate-btn" onclick="doLogin()">دخول 🚀</button>
     </div>
- 
+
     <!-- Register form -->
     <div id="registerForm" style="display:none;">
       <div class="form-group">
@@ -248,10 +246,10 @@ tr:hover td{background:var(--p3);}
     <div class="gate-err" id="gateErr"></div>
   </div>
 </div>
- 
+
 <!-- ══ SHELL ══ -->
 <div class="shell" id="shell">
- 
+
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-brand">
@@ -264,12 +262,12 @@ tr:hover td{background:var(--p3);}
     <nav class="sidebar-nav">
       <div class="snav-section">الرئيسية</div>
       <button class="snav-btn active" id="nav0" onclick="goPanel(0)"><span class="snav-icon">🏠</span>الرئيسية</button>
- 
+
       <div class="snav-section">المحتوى</div>
       <button class="snav-btn" id="nav1" onclick="goPanel(1)"><span class="snav-icon">📚</span>موادي الدراسية</button>
       <button class="snav-btn" id="nav2" onclick="goPanel(2)"><span class="snav-icon">📝</span>الدروس والمحتوى</button>
       <button class="snav-btn" id="nav3" onclick="goPanel(3)"><span class="snav-icon">❓</span>الاختبارات</button>
- 
+
       <div class="snav-section">التفاعل</div>
       <button class="snav-btn" id="nav4" onclick="goPanel(4)"><span class="snav-icon">🎯</span>تحدي اليوم</button>
       <button class="snav-btn" id="nav5" onclick="goPanel(5)"><span class="snav-icon">🔴</span>البث المباشر</button>
@@ -279,7 +277,7 @@ tr:hover td{background:var(--p3);}
       <button class="logout-btn" onclick="doLogout()">🚪 تسجيل الخروج</button>
     </div>
   </aside>
- 
+
   <!-- MAIN -->
   <main class="main">
     <div class="topbar">
@@ -292,7 +290,7 @@ tr:hover td{background:var(--p3);}
         <div class="ctrl-btn" onclick="location.href='index_academy.html'" title="عرض الموقع">👁️</div>
       </div>
     </div>
- 
+
     <!-- P0: DASHBOARD -->
     <div class="panel show" id="p0">
       <div class="stats-row" id="dashStats">
@@ -311,7 +309,7 @@ tr:hover td{background:var(--p3);}
         </div>
       </div>
     </div>
- 
+
     <!-- P1: SUBJECTS -->
     <div class="panel" id="p1">
       <div class="card">
@@ -344,13 +342,13 @@ tr:hover td{background:var(--p3);}
         </div>
         <button class="btn btn-primary" onclick="addSubject()">💾 نشر المادة للطلاب</button>
       </div>
- 
+
       <div class="card">
         <div class="card-title">📚 موادي الدراسية <div class="badge" id="subjCountBadge">0</div></div>
         <div id="subjList"><div class="empty"><div class="empty-icon">📭</div><div>لم تضف أي مادة بعد</div></div></div>
       </div>
     </div>
- 
+
     <!-- P2: LESSONS -->
     <div class="panel" id="p2">
       <div class="card">
@@ -400,7 +398,7 @@ tr:hover td{background:var(--p3);}
           <button class="btn btn-ghost" onclick="clearLessonForm()">🔄 مسح الحقول</button>
         </div>
       </div>
- 
+
       <div class="card">
         <div class="card-title">📋 قائمة الدروس <div class="badge" id="lessonCountBadge">0</div></div>
         <div class="form-row" style="margin-bottom:14px;">
@@ -414,7 +412,7 @@ tr:hover td{background:var(--p3);}
         <div id="lessonList"><div class="empty"><div class="empty-icon">📭</div><div>لا توجد دروس بعد</div></div></div>
       </div>
     </div>
- 
+
     <!-- P3: QUIZZES -->
     <div class="panel" id="p3">
       <div class="card">
@@ -437,13 +435,13 @@ tr:hover td{background:var(--p3);}
         </div>
         <button class="btn btn-primary" onclick="saveQuiz()">💾 نشر الاختبار</button>
       </div>
- 
+
       <div class="card">
         <div class="card-title">📋 الاختبارات المنشورة</div>
         <div id="quizList"><div class="empty"><div class="empty-icon">❓</div><div>لا توجد اختبارات بعد</div></div></div>
       </div>
     </div>
- 
+
     <!-- P4: CHALLENGE -->
     <div class="panel" id="p4">
       <div class="card">
@@ -474,7 +472,7 @@ tr:hover td{background:var(--p3);}
         <div id="chalCurrent"><div class="empty"><div class="empty-icon">🎯</div><div>لا يوجد تحدٍّ منشور الآن</div></div></div>
       </div>
     </div>
- 
+
     <!-- P5: BROADCAST -->
     <div class="panel" id="p5">
       <div class="card" id="liveCurrent" style="display:none;">
@@ -509,7 +507,7 @@ tr:hover td{background:var(--p3);}
         <button class="btn btn-primary" onclick="publishBroadcast()">📤 نشر البث — يظهر فوراً للطلاب</button>
       </div>
     </div>
- 
+
     <!-- P6: ANNOUNCEMENTS -->
     <div class="panel" id="p6">
       <div class="card">
@@ -541,10 +539,10 @@ tr:hover td{background:var(--p3);}
         <div id="annList"><div class="empty"><div class="empty-icon">📢</div><div>لا توجد إعلانات</div></div></div>
       </div>
     </div>
- 
+
   </main>
 </div><!-- .shell -->
- 
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc, addDoc, setDoc, updateDoc,
@@ -553,7 +551,7 @@ import { getFirestore, collection, getDocs, doc, getDoc, addDoc, setDoc, updateD
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
   signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
- 
+
 const app = initializeApp({
   apiKey:"AIzaSyBMvIzV131KdAjuHS8B6tCUBsmaGgloLUY",
   authDomain:"mostafa-acdemy-2645a.firebaseapp.com",
@@ -564,13 +562,13 @@ const app = initializeApp({
 });
 const db = getFirestore(app);
 const auth = getAuth(app);
- 
+
 /* ═══ STATE ═══ */
 let currentUser = null;
 let teacherProfile = {};
 let mySubjects = [];
 let quizQCount = 0;
- 
+
 /* ═══ UTILS ═══ */
 const esc = s => String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let toastTimer;
@@ -579,7 +577,7 @@ window.showToast = function(msg){
   t.classList.add('show'); clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
 };
- 
+
 /* ═══ THEME ═══ */
 const root = document.documentElement;
 if(localStorage.getItem('adminMode')) root.setAttribute('data-mode',localStorage.getItem('adminMode'));
@@ -589,7 +587,7 @@ window.toggleMode = function(){
   root.setAttribute('data-mode',m); localStorage.setItem('adminMode',m);
   document.getElementById('modeBtn').textContent=m==='dark'?'☀️':'🌙';
 };
- 
+
 /* ═══ AUTH TABS ═══ */
 window.switchAuthTab = function(tab, btn){
   document.querySelectorAll('.gate-tab').forEach(b=>b.classList.remove('active'));
@@ -598,7 +596,7 @@ window.switchAuthTab = function(tab, btn){
   document.getElementById('registerForm').style.display = tab==='register'?'block':'none';
   document.getElementById('gateErr').textContent='';
 };
- 
+
 /* ═══ LOGIN / REGISTER ═══ */
 window.doLogin = async function(){
   const email=document.getElementById('loginEmail').value.trim();
@@ -612,7 +610,7 @@ window.doLogin = async function(){
   }
 };
 document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
- 
+
 window.doRegister = async function(){
   const name=document.getElementById('regName').value.trim();
   const spec=document.getElementById('regSpec').value;
@@ -629,11 +627,11 @@ window.doRegister = async function(){
     err.textContent='❌ '+(e.code==='auth/email-already-in-use'?'البريد مسجّل من قبل':e.message);
   }
 };
- 
+
 window.doLogout = async function(){
   await signOut(auth);
 };
- 
+
 /* ═══ AUTH STATE ═══ */
 onAuthStateChanged(auth, async user=>{
   if(user){
@@ -652,9 +650,9 @@ onAuthStateChanged(auth, async user=>{
     document.getElementById('shell').classList.remove('show');
   }
 });
- 
+
 function specLabel(s){const m={arabic:'معلم عربي',english:'معلم إنجليزي',math:'معلم رياضيات',science:'معلم علوم',other:'معلم'};return m[s]||s;}
- 
+
 /* ═══ NAV ═══ */
 const pageMeta=[
   ['🏠 الرئيسية','نظرة عامة على نشاطك'],
@@ -677,7 +675,7 @@ window.goPanel = function(i){
   if(i===5) loadBroadcast();
   if(i===6) loadAnn();
 };
- 
+
 /* ═══ DASHBOARD ═══ */
 async function loadDashboard(){
   if(!currentUser) return;
@@ -693,7 +691,7 @@ async function loadDashboard(){
     document.getElementById('ds3').textContent=mySubjects.length*10+qSnap.size*5;
   }catch(e){}
 }
- 
+
 /* ═══ SUBJECTS ═══ */
 async function loadSubjects(){
   if(!currentUser) return;
@@ -720,7 +718,7 @@ async function loadSubjects(){
   }catch(e){list.innerHTML='<div class="empty">⚠️ خطأ: '+esc(e.message)+'</div>';}
 }
 function catLabel(c){const m={arabic:'عربي',english:'إنجليزي',math:'رياضيات',science:'علوم',other:'أخرى'};return m[c]||c||'عام';}
- 
+
 window.addSubject = async function(){
   const icon=document.getElementById('subjIcon').value.trim()||'📚';
   const title=document.getElementById('subjTitle').value.trim();
@@ -742,7 +740,7 @@ window.addSubject = async function(){
     loadSubjects(); loadDashboard();
   }catch(e){showToast('❌ '+e.message);}
 };
- 
+
 window.deleteSubject = async function(id,name){
   if(!confirm('حذف مادة "'+name+'"؟ سيتم حذف كل دروسها أيضاً. هذا الإجراء لا يمكن التراجع عنه.')) return;
   try{
@@ -750,7 +748,7 @@ window.deleteSubject = async function(id,name){
     showToast('🗑️ تم حذف المادة'); loadSubjects(); loadDashboard();
   }catch(e){showToast('❌ '+e.message);}
 };
- 
+
 window.editSubject = async function(id){
   const s=mySubjects.find(x=>x.id===id); if(!s) return;
   const newTitle=prompt('اسم المادة الجديد:',s.title);
@@ -761,7 +759,7 @@ window.editSubject = async function(id){
     showToast('✅ تم تحديث المادة'); loadSubjects();
   }catch(e){showToast('❌ '+e.message);}
 };
- 
+
 function populateSubjSelect(){
   const sel=document.getElementById('lessonSubj');
   const sel2=document.getElementById('filterLessonSubj');
@@ -772,14 +770,14 @@ function populateQuizSubj(){
   const sel=document.getElementById('quizSubj');
   sel.innerHTML='<option value="">— اختر المادة —</option>'+mySubjects.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('');
 }
- 
+
 /* ═══ LESSONS ═══ */
 window.onTypeChange = function(){
   const t=document.getElementById('lessonType').value;
   document.getElementById('videoUrlRow').style.display=t==='video'?'flex':'none';
 };
 window.onSubjChange = function(){};
- 
+
 window.addLesson = async function(){
   const subjId=document.getElementById('lessonSubj').value;
   const type=document.getElementById('lessonType').value;
@@ -805,14 +803,14 @@ window.addLesson = async function(){
     showToast('✅ تم نشر الدرس!'); loadLessons(); loadDashboard();
   }catch(e){showToast('❌ '+e.message);}
 };
- 
+
 window.clearLessonForm = function(){
   document.getElementById('lessonTitle').value='';
   document.getElementById('lessonDesc').value='';
   document.getElementById('lessonVideoUrl').value='';
   document.getElementById('lessonIcon').value='';
 };
- 
+
 window.loadLessons = async function(){
   if(!currentUser) return;
   const list=document.getElementById('lessonList');
@@ -847,7 +845,7 @@ window.loadLessons = async function(){
       </div>`;}).join('');
   }catch(e){list.innerHTML='<div class="empty">⚠️ '+esc(e.message)+'</div>';}
 };
- 
+
 window.deleteLesson = async function(id,subjId,type){
   if(!confirm('حذف هذا الدرس نهائياً؟')) return;
   try{
@@ -861,7 +859,7 @@ window.deleteLesson = async function(id,subjId,type){
     showToast('🗑️ تم حذف الدرس'); loadLessons(); loadDashboard();
   }catch(e){showToast('❌ '+e.message);}
 };
- 
+
 /* ═══ QUIZZES ═══ */
 window.addQuizQ = function(){
   quizQCount++;
@@ -887,7 +885,7 @@ window.addQuizQ = function(){
     </div>`;
   wrap.appendChild(div);
 };
- 
+
 window.saveQuiz = async function(){
   const subjId=document.getElementById('quizSubj').value;
   const title=document.getElementById('quizTitle').value.trim();
@@ -916,7 +914,7 @@ window.saveQuiz = async function(){
     showToast('✅ تم نشر الاختبار!'); loadQuizList(); loadDashboard();
   }catch(e){showToast('❌ '+e.message);}
 };
- 
+
 window.loadQuizList = async function(){
   const list=document.getElementById('quizList');
   try{
@@ -936,13 +934,13 @@ window.loadQuizList = async function(){
       </div>`;}).join('');
   }catch(e){list.innerHTML='<div class="empty">⚠️ '+esc(e.message)+'</div>';}
 };
- 
+
 window.deleteQuiz = async function(id){
   if(!confirm('حذف هذا الاختبار نهائياً؟')) return;
   await deleteDoc(doc(db,'quizzes',id));
   showToast('🗑️ تم الحذف'); loadQuizList();
 };
- 
+
 /* ═══ CHALLENGE ═══ */
 window.saveChallenge = async function(active){
   if(active){
@@ -958,7 +956,7 @@ window.saveChallenge = async function(active){
   }
   loadChallenge();
 };
- 
+
 async function loadChallenge(){
   const wrap=document.getElementById('chalCurrent');
   try{
@@ -974,10 +972,10 @@ async function loadChallenge(){
     }else{ wrap.innerHTML='<div class="empty"><div class="empty-icon">🎯</div><div>لا يوجد تحدٍّ</div></div>'; }
   }catch(e){}
 }
- 
+
 /* ═══ BROADCAST ═══ */
 const PLATFORMS={meet:{icon:'🎥',label:'Google Meet'},facebook:{icon:'📘',label:'Facebook'},youtube:{icon:'▶️',label:'YouTube'},telegram:{icon:'✈️',label:'Telegram'},zoom:{icon:'💻',label:'Zoom'}};
- 
+
 window.publishBroadcast = async function(){
   const title=document.getElementById('liveTitle').value.trim();
   const platform=document.getElementById('livePlatform').value;
@@ -986,13 +984,13 @@ window.publishBroadcast = async function(){
   await setDoc(doc(db,'broadcasts','live'),{title,platform,link,active:true,createdAt:serverTimestamp()});
   showToast('🔴 تم نشر البث! يظهر فوراً للطلاب'); loadBroadcast();
 };
- 
+
 window.endBroadcast = async function(){
   if(!confirm('إيقاف البث الحالي؟')) return;
   await updateDoc(doc(db,'broadcasts','live'),{active:false});
   showToast('⏹ تم إيقاف البث'); loadBroadcast();
 };
- 
+
 async function loadBroadcast(){
   const card=document.getElementById('liveCurrent');
   const content=document.getElementById('liveCurrentContent');
@@ -1008,7 +1006,7 @@ async function loadBroadcast(){
     }else{ card.style.display='none'; }
   }catch(e){ card.style.display='none'; }
 }
- 
+
 /* ═══ ANNOUNCEMENTS ═══ */
 window.publishAnn = async function(){
   const text=document.getElementById('annText').value.trim();
@@ -1020,7 +1018,7 @@ window.publishAnn = async function(){
   document.getElementById('annText').value='';
   showToast('✅ تم نشر الإعلان!'); loadAnn();
 };
- 
+
 async function loadAnn(){
   const list=document.getElementById('annList');
   const icons={info:'ℹ️',success:'🎉',warning:'⚠️'};
@@ -1041,12 +1039,12 @@ async function loadAnn(){
       </div>`).join('');
   }catch(e){list.innerHTML='<div class="empty">⚠️ '+esc(e.message)+'</div>';}
 }
- 
+
 window.deleteAnn = async function(id){
   await deleteDoc(doc(db,'announcements',id));
   showToast('🗑️ تم حذف الإعلان'); loadAnn();
 };
- 
+
 /* ═══ KEYBOARD LOGIN ═══ */
 ['loginEmail','loginPass'].forEach(id=>{
   document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
