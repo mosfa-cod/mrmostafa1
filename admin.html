@@ -1,0 +1,1056 @@
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>لوحة تحكم المعلم · منصة مستر مصطفى</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#7C3AED;--p2:#5B21B6;--p3:#EDE9FE;
+  --gold:#F59E0B;--teal:#10B981;--rose:#F43F5E;
+  --bg:#F8F7FF;--card:#FFFFFF;--card2:#F3F4F6;
+  --text:#1F2937;--text2:#6B7280;--text3:#9CA3AF;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.14);
+  --shadow:0 4px 24px rgba(124,58,237,.12);
+  --shadow2:0 2px 10px rgba(0,0,0,.06);
+  --r:14px;--r2:20px;--tr:.3s;
+}
+[data-mode=dark]{
+  --bg:#0F0A1E;--card:#1E1540;--card2:#251B4E;
+  --text:#F1F0FF;--text2:#C4B5FD;--text3:#7C6FCD;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --shadow:0 4px 24px rgba(124,58,237,.3);
+  --shadow2:0 2px 10px rgba(0,0,0,.4);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
+  transition:background var(--tr),color var(--tr);min-height:100vh;}
+ 
+/* ═══ LOGIN ═══ */
+.gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;
+  justify-content:center;background:linear-gradient(135deg,var(--p),var(--p2));
+  padding:20px;}
+.gate.hidden{display:none;}
+.gate-box{width:100%;max-width:420px;background:var(--card);border-radius:var(--r2);
+  padding:40px 32px;box-shadow:0 32px 80px rgba(0,0,0,.3);animation:popIn .4s;}
+@keyframes popIn{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.gate-logo{text-align:center;font-size:52px;margin-bottom:8px;}
+.gate-title{text-align:center;font-size:22px;font-weight:900;color:var(--p);margin-bottom:4px;}
+.gate-sub{text-align:center;font-size:13px;color:var(--text2);margin-bottom:28px;}
+.gate-tabs{display:flex;gap:0;margin-bottom:24px;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+.gate-tab{flex:1;padding:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:700;
+  font-family:inherit;border:none;background:var(--card2);color:var(--text2);transition:all .2s;}
+.gate-tab.active{background:var(--p);color:#fff;}
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:5px;}
+.form-input{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);
+  background:var(--card2);color:var(--text);font-family:inherit;font-size:14px;outline:none;
+  transition:border-color .2s;}
+.form-input:focus{border-color:var(--p);}
+.gate-btn{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--p),var(--p2));
+  color:#fff;font-size:15px;font-weight:900;border:none;cursor:pointer;font-family:inherit;
+  box-shadow:0 5px 20px rgba(124,58,237,.35);transition:all .2s;margin-top:8px;}
+.gate-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,.45);}
+.gate-btn:active{transform:translateY(0);}
+.gate-err{margin-top:10px;font-size:12px;color:var(--rose);font-weight:700;text-align:center;min-height:18px;}
+ 
+/* ═══ SHELL ═══ */
+.shell{display:none;min-height:100vh;}
+.shell.show{display:flex;}
+ 
+/* ═══ SIDEBAR ═══ */
+.sidebar{width:240px;min-height:100vh;background:var(--card);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0;}
+.sidebar-brand{padding:20px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;}
+.sidebar-logo{width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,var(--p),var(--p2));
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.sidebar-name{font-size:13px;font-weight:800;color:var(--text);}
+.sidebar-role{font-size:11px;color:var(--text2);}
+.sidebar-nav{padding:14px 10px;flex:1;}
+.snav-section{font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;
+  letter-spacing:.8px;padding:8px 8px 4px;}
+.snav-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;
+  border-radius:12px;border:none;background:transparent;color:var(--text2);
+  font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;text-align:right;
+  transition:all .2s;margin-bottom:2px;}
+.snav-btn:hover,.snav-btn.active{background:var(--p3);color:var(--p);}
+.snav-icon{font-size:16px;flex-shrink:0;}
+.sidebar-footer{padding:14px;border-top:1px solid var(--border);}
+.logout-btn{width:100%;padding:10px;border-radius:10px;background:rgba(244,63,94,.1);
+  border:1px solid rgba(244,63,94,.2);color:var(--rose);font-size:13px;font-weight:700;
+  cursor:pointer;font-family:inherit;}
+ 
+/* ═══ MAIN ═══ */
+.main{flex:1;overflow-y:auto;padding:24px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+.page-title{font-size:20px;font-weight:900;}
+.page-sub{font-size:13px;color:var(--text2);margin-top:2px;}
+.ctrl-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);
+  background:var(--card);cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:16px;color:var(--text);transition:all .2s;}
+.ctrl-btn:hover{border-color:var(--p);background:var(--p3);}
+ 
+/* ═══ PANELS ═══ */
+.panel{display:none;animation:fadeIn .3s;}
+.panel.show{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+ 
+/* ═══ STATS ROW ═══ */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);
+  padding:18px;box-shadow:var(--shadow2);}
+.stat-icon{font-size:26px;margin-bottom:8px;}
+.stat-val{font-size:28px;font-weight:900;color:var(--p);}
+.stat-lbl{font-size:12px;color:var(--text2);font-weight:700;}
+ 
+/* ═══ CARD ═══ */
+.card{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);
+  padding:22px;box-shadow:var(--shadow2);margin-bottom:18px;}
+.card-title{font-size:15px;font-weight:900;color:var(--text);margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;}
+.card-title .badge{padding:3px 10px;border-radius:8px;font-size:10px;font-weight:800;
+  background:var(--p3);color:var(--p);}
+ 
+/* ═══ FORM ═══ */
+.form-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.form-group{flex:1;min-width:180px;}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:5px;}
+.form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;border-radius:12px;
+  border:1.5px solid var(--border);background:var(--bg);color:var(--text);
+  font-family:inherit;font-size:13px;outline:none;transition:.2s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--p);}
+.form-textarea{resize:vertical;min-height:80px;}
+.form-input[dir=ltr]{direction:ltr;text-align:left;}
+ 
+/* ═══ BUTTONS ═══ */
+.btn{padding:10px 20px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;
+  font-size:13px;font-weight:800;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;
+  box-shadow:0 4px 14px rgba(124,58,237,.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,58,237,.4);}
+.btn-teal{background:linear-gradient(135deg,var(--teal),#059669);color:#fff;}
+.btn-danger{background:rgba(244,63,94,.1);color:var(--rose);border:1px solid rgba(244,63,94,.25);}
+.btn-danger:hover{background:var(--rose);color:#fff;}
+.btn-sm{padding:6px 12px;font-size:11px;border-radius:9px;}
+.btn-ghost{background:var(--bg);border:1.5px solid var(--border);color:var(--text2);}
+.btn-ghost:hover{border-color:var(--p);color:var(--p);}
+ 
+/* ═══ TABLE ═══ */
+.table-wrap{overflow-x:auto;border-radius:var(--r);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:right;padding:10px 12px;color:var(--text3);font-weight:800;font-size:11px;
+  border-bottom:2px solid var(--border);white-space:nowrap;background:var(--bg);}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text2);}
+tr:hover td{background:var(--p3);}
+.chip{padding:4px 10px;border-radius:8px;font-size:10.5px;font-weight:800;white-space:nowrap;}
+.chip-on{background:rgba(16,185,129,.12);color:var(--teal);}
+.chip-off{background:rgba(244,63,94,.12);color:var(--rose);}
+.chip-p{background:var(--p3);color:var(--p);}
+ 
+/* ═══ LESSON ROWS ═══ */
+.lesson-row{background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:14px;margin-bottom:10px;}
+.lesson-row-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.row-num{font-size:11px;color:var(--text3);font-weight:800;}
+ 
+/* ═══ SUBJECTS LIST ═══ */
+.subj-item{display:flex;align-items:center;gap:14px;padding:14px;
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;
+  transition:all .2s;}
+.subj-item:hover{border-color:var(--p);box-shadow:var(--shadow2);}
+.subj-icon{width:48px;height:48px;border-radius:14px;background:var(--p3);
+  display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.subj-info{flex:1;}
+.subj-name{font-size:14px;font-weight:800;}
+.subj-meta{font-size:12px;color:var(--text2);margin-top:2px;}
+.subj-actions{display:flex;gap:6px;}
+ 
+/* ═══ EMPTY ═══ */
+.empty{text-align:center;padding:40px;color:var(--text3);}
+.empty-icon{font-size:48px;margin-bottom:10px;}
+ 
+/* ═══ TOAST ═══ */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--p);color:#fff;padding:12px 24px;border-radius:14px;
+  font-size:13px;font-weight:700;z-index:9999;transition:transform .38s;
+  box-shadow:0 8px 28px rgba(0,0,0,.3);white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+ 
+/* ═══ PROGRESS ═══ */
+.progress-bar{height:6px;border-radius:3px;background:var(--border);overflow:hidden;margin:4px 0;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--teal));transition:width .5s;}
+ 
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .main{padding:16px;}
+}
+</style>
+</head>
+<body data-mode="light">
+ 
+<div class="toast" id="toast"></div>
+ 
+<!-- ══ LOGIN GATE ══ -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <div class="gate-logo">👨‍🏫</div>
+    <div class="gate-title">لوحة تحكم المعلم</div>
+    <div class="gate-sub">منصة مستر مصطفى التعليمية</div>
+    <div class="gate-tabs">
+      <button class="gate-tab active" onclick="switchAuthTab('login',this)">تسجيل الدخول</button>
+      <button class="gate-tab" onclick="switchAuthTab('register',this)">تسجيل معلم جديد</button>
+    </div>
+ 
+    <!-- Login form -->
+    <div id="loginForm">
+      <div class="form-group">
+        <label class="form-label">البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" class="form-input" dir="ltr" placeholder="teacher@school.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">كلمة السر</label>
+        <input type="password" id="loginPass" class="form-input" dir="ltr" placeholder="••••••••">
+      </div>
+      <button class="gate-btn" onclick="doLogin()">دخول 🚀</button>
+    </div>
+ 
+    <!-- Register form -->
+    <div id="registerForm" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">الاسم الكامل</label>
+        <input type="text" id="regName" class="form-input" placeholder="الأستاذ / الأستاذة ...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">التخصص</label>
+        <select id="regSpec" class="form-select">
+          <option value="arabic">عربي</option>
+          <option value="english">إنجليزي</option>
+          <option value="math">رياضيات</option>
+          <option value="science">علوم</option>
+          <option value="other">أخرى</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">البريد الإلكتروني</label>
+        <input type="email" id="regEmail" class="form-input" dir="ltr" placeholder="teacher@school.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">كلمة السر (6 أحرف فأكثر)</label>
+        <input type="password" id="regPass" class="form-input" dir="ltr" placeholder="••••••••">
+      </div>
+      <button class="gate-btn" onclick="doRegister()">إنشاء حساب معلم ✨</button>
+    </div>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
+ 
+<!-- ══ SHELL ══ -->
+<div class="shell" id="shell">
+ 
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">👨‍🏫</div>
+      <div>
+        <div class="sidebar-name" id="sidebarName">المعلم</div>
+        <div class="sidebar-role" id="sidebarRole">معلم</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="snav-section">الرئيسية</div>
+      <button class="snav-btn active" id="nav0" onclick="goPanel(0)"><span class="snav-icon">🏠</span>الرئيسية</button>
+ 
+      <div class="snav-section">المحتوى</div>
+      <button class="snav-btn" id="nav1" onclick="goPanel(1)"><span class="snav-icon">📚</span>موادي الدراسية</button>
+      <button class="snav-btn" id="nav2" onclick="goPanel(2)"><span class="snav-icon">📝</span>الدروس والمحتوى</button>
+      <button class="snav-btn" id="nav3" onclick="goPanel(3)"><span class="snav-icon">❓</span>الاختبارات</button>
+ 
+      <div class="snav-section">التفاعل</div>
+      <button class="snav-btn" id="nav4" onclick="goPanel(4)"><span class="snav-icon">🎯</span>تحدي اليوم</button>
+      <button class="snav-btn" id="nav5" onclick="goPanel(5)"><span class="snav-icon">🔴</span>البث المباشر</button>
+      <button class="snav-btn" id="nav6" onclick="goPanel(6)"><span class="snav-icon">📢</span>الإعلانات</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">🚪 تسجيل الخروج</button>
+    </div>
+  </aside>
+ 
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="pageTitle">🏠 الرئيسية</div>
+        <div class="page-sub" id="pageSub">مرحباً بك في لوحة التحكم</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <div class="ctrl-btn" onclick="toggleMode()" id="modeBtn" title="الوضع الليلي">🌙</div>
+        <div class="ctrl-btn" onclick="location.href='index_academy.html'" title="عرض الموقع">👁️</div>
+      </div>
+    </div>
+ 
+    <!-- P0: DASHBOARD -->
+    <div class="panel show" id="p0">
+      <div class="stats-row" id="dashStats">
+        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="ds0">0</div><div class="stat-lbl">موادي</div></div>
+        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="ds1">0</div><div class="stat-lbl">إجمالي دروسي</div></div>
+        <div class="stat-card"><div class="stat-icon">❓</div><div class="stat-val" id="ds2">0</div><div class="stat-lbl">اختباراتي</div></div>
+        <div class="stat-card"><div class="stat-icon">🏅</div><div class="stat-val" id="ds3">0</div><div class="stat-lbl">نقاط الإنجاز</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">⚡ إجراءات سريعة</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <button class="btn btn-primary" onclick="goPanel(1)">➕ إضافة مادة جديدة</button>
+          <button class="btn btn-teal" onclick="goPanel(2)">📝 إضافة درس</button>
+          <button class="btn btn-ghost" onclick="goPanel(4)">🎯 تحدي اليوم</button>
+          <button class="btn btn-ghost" onclick="goPanel(5)">🔴 بث مباشر</button>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- P1: SUBJECTS -->
+    <div class="panel" id="p1">
+      <div class="card">
+        <div class="card-title">➕ إضافة مادة دراسية جديدة</div>
+        <div class="form-row">
+          <div class="form-group" style="max-width:80px;">
+            <label class="form-label">أيقونة</label>
+            <input type="text" id="subjIcon" class="form-input" placeholder="📚" style="text-align:center;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">اسم المادة</label>
+            <input type="text" id="subjTitle" class="form-input" placeholder="مثال: اللغة العربية للصف الثالث">
+          </div>
+          <div class="form-group" style="max-width:160px;">
+            <label class="form-label">التصنيف</label>
+            <select id="subjCat" class="form-select">
+              <option value="arabic">🖊️ عربي</option>
+              <option value="english">🇬🇧 إنجليزي</option>
+              <option value="math">🔢 رياضيات</option>
+              <option value="science">🔬 علوم</option>
+              <option value="other">📦 أخرى</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">وصف المادة</label>
+            <textarea id="subjDesc" class="form-textarea" placeholder="وصف مختصر يراه الطلاب وأولياء الأمور..."></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="addSubject()">💾 نشر المادة للطلاب</button>
+      </div>
+ 
+      <div class="card">
+        <div class="card-title">📚 موادي الدراسية <div class="badge" id="subjCountBadge">0</div></div>
+        <div id="subjList"><div class="empty"><div class="empty-icon">📭</div><div>لم تضف أي مادة بعد</div></div></div>
+      </div>
+    </div>
+ 
+    <!-- P2: LESSONS -->
+    <div class="panel" id="p2">
+      <div class="card">
+        <div class="card-title">📝 إضافة درس / محتوى جديد</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">المادة الدراسية</label>
+            <select id="lessonSubj" class="form-select" onchange="onSubjChange()">
+              <option value="">— اختر المادة —</option>
+            </select>
+          </div>
+          <div class="form-group" style="max-width:160px;">
+            <label class="form-label">نوع المحتوى</label>
+            <select id="lessonType" class="form-select" onchange="onTypeChange()">
+              <option value="lesson">📖 درس نظري</option>
+              <option value="video">🎬 فيديو</option>
+              <option value="story">📕 قصة</option>
+              <option value="exercise">✏️ تمرين</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="max-width:80px;">
+            <label class="form-label">أيقونة</label>
+            <input type="text" id="lessonIcon" class="form-input" placeholder="📖" style="text-align:center;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">عنوان الدرس / المحتوى</label>
+            <input type="text" id="lessonTitle" class="form-input" placeholder="مثال: درس الفاعل والمفعول به">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">شرح / وصف الدرس</label>
+            <textarea id="lessonDesc" class="form-textarea" placeholder="اكتب محتوى الدرس أو وصفه هنا..."></textarea>
+          </div>
+        </div>
+        <!-- Video URL field (shows when type=video) -->
+        <div class="form-row" id="videoUrlRow" style="display:none;">
+          <div class="form-group">
+            <label class="form-label">رابط الفيديو (YouTube أو أي رابط)</label>
+            <input type="url" id="lessonVideoUrl" class="form-input" dir="ltr" placeholder="https://youtube.com/watch?v=...">
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="addLesson()">💾 نشر الدرس للطلاب</button>
+          <button class="btn btn-ghost" onclick="clearLessonForm()">🔄 مسح الحقول</button>
+        </div>
+      </div>
+ 
+      <div class="card">
+        <div class="card-title">📋 قائمة الدروس <div class="badge" id="lessonCountBadge">0</div></div>
+        <div class="form-row" style="margin-bottom:14px;">
+          <div class="form-group" style="max-width:200px;">
+            <label class="form-label">تصفية حسب المادة</label>
+            <select id="filterLessonSubj" class="form-select" onchange="loadLessons()">
+              <option value="">الكل</option>
+            </select>
+          </div>
+        </div>
+        <div id="lessonList"><div class="empty"><div class="empty-icon">📭</div><div>لا توجد دروس بعد</div></div></div>
+      </div>
+    </div>
+ 
+    <!-- P3: QUIZZES -->
+    <div class="panel" id="p3">
+      <div class="card">
+        <div class="card-title">❓ إضافة اختبار جديد</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">المادة / الدرس</label>
+            <select id="quizSubj" class="form-select">
+              <option value="">— اختر المادة —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">عنوان الاختبار</label>
+            <input type="text" id="quizTitle" class="form-input" placeholder="مثال: اختبار النحو — الوحدة الأولى">
+          </div>
+        </div>
+        <div id="quizQuestions"></div>
+        <div style="display:flex;gap:10px;margin-bottom:14px;">
+          <button class="btn btn-ghost" onclick="addQuizQ()">➕ إضافة سؤال</button>
+        </div>
+        <button class="btn btn-primary" onclick="saveQuiz()">💾 نشر الاختبار</button>
+      </div>
+ 
+      <div class="card">
+        <div class="card-title">📋 الاختبارات المنشورة</div>
+        <div id="quizList"><div class="empty"><div class="empty-icon">❓</div><div>لا توجد اختبارات بعد</div></div></div>
+      </div>
+    </div>
+ 
+    <!-- P4: CHALLENGE -->
+    <div class="panel" id="p4">
+      <div class="card">
+        <div class="card-title">🎯 تحدي اليوم</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">عنوان التحدي</label>
+            <input type="text" id="chalTitle" class="form-input" placeholder="مثال: تحدي المفردات الجديدة">
+          </div>
+          <div class="form-group" style="max-width:120px;">
+            <label class="form-label">النقاط</label>
+            <input type="number" id="chalPts" class="form-input" dir="ltr" value="50" min="1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">وصف التحدي</label>
+            <textarea id="chalDesc" class="form-textarea" placeholder="ماذا يفعل الطالب في هذا التحدي؟"></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="saveChallenge(true)">🚀 نشر التحدي الآن</button>
+          <button class="btn btn-danger btn-sm" onclick="saveChallenge(false)">⏸ إخفاء التحدي</button>
+        </div>
+      </div>
+      <div class="card" id="chalCurrentWrap">
+        <div class="card-title">📋 التحدي الحالي</div>
+        <div id="chalCurrent"><div class="empty"><div class="empty-icon">🎯</div><div>لا يوجد تحدٍّ منشور الآن</div></div></div>
+      </div>
+    </div>
+ 
+    <!-- P5: BROADCAST -->
+    <div class="panel" id="p5">
+      <div class="card" id="liveCurrent" style="display:none;">
+        <div class="card-title" style="color:var(--rose);">🔴 بثّ نشط الآن</div>
+        <div id="liveCurrentContent"></div>
+        <button class="btn btn-danger" onclick="endBroadcast()" style="margin-top:12px;">⏹ إيقاف البث</button>
+      </div>
+      <div class="card">
+        <div class="card-title">🎬 نشر بثّ مباشر جديد</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">عنوان البث / الدرس</label>
+            <input type="text" id="liveTitle" class="form-input" placeholder="مثال: شرح درس الجبر مباشر">
+          </div>
+          <div class="form-group" style="max-width:200px;">
+            <label class="form-label">منصة البث</label>
+            <select id="livePlatform" class="form-select">
+              <option value="meet">🎥 Google Meet</option>
+              <option value="facebook">📘 Facebook Live</option>
+              <option value="youtube">▶️ YouTube Live</option>
+              <option value="telegram">✈️ Telegram</option>
+              <option value="zoom">💻 Zoom</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">رابط البث</label>
+            <input type="url" id="liveLink" class="form-input" dir="ltr" placeholder="https://meet.google.com/xxx-xxxx-xxx">
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="publishBroadcast()">📤 نشر البث — يظهر فوراً للطلاب</button>
+      </div>
+    </div>
+ 
+    <!-- P6: ANNOUNCEMENTS -->
+    <div class="panel" id="p6">
+      <div class="card">
+        <div class="card-title">📢 إرسال إعلان جديد</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">نص الإعلان</label>
+            <textarea id="annText" class="form-textarea" placeholder="مثال: غداً اختبار في موضوع الجبر، راجعوا الدروس! 📚"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="max-width:200px;">
+            <label class="form-label">نوع الإعلان</label>
+            <select id="annType" class="form-select">
+              <option value="info">ℹ️ معلومة</option>
+              <option value="success">🎉 تهنئة</option>
+              <option value="warning">⚠️ تنبيه مهم</option>
+            </select>
+          </div>
+          <div class="form-group" style="max-width:160px;">
+            <label class="form-label">يظهر لمدة (أيام)</label>
+            <input type="number" id="annDays" class="form-input" dir="ltr" value="3" min="1" max="30">
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="publishAnn()">📤 نشر الإعلان الآن</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 الإعلانات الحالية</div>
+        <div id="annList"><div class="empty"><div class="empty-icon">📢</div><div>لا توجد إعلانات</div></div></div>
+      </div>
+    </div>
+ 
+  </main>
+</div><!-- .shell -->
+ 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, getDoc, addDoc, setDoc, updateDoc,
+  deleteDoc, query, where, orderBy, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+ 
+const app = initializeApp({
+  apiKey:"AIzaSyBMvIzV131KdAjuHS8B6tCUBsmaGgloLUY",
+  authDomain:"mostafa-acdemy-2645a.firebaseapp.com",
+  projectId:"mostafa-acdemy-2645a",
+  storageBucket:"mostafa-acdemy-2645a.firebasestorage.app",
+  messagingSenderId:"371101699494",
+  appId:"1:371101699494:web:3e79c870941afef5179367"
+});
+const db = getFirestore(app);
+const auth = getAuth(app);
+ 
+/* ═══ STATE ═══ */
+let currentUser = null;
+let teacherProfile = {};
+let mySubjects = [];
+let quizQCount = 0;
+ 
+/* ═══ UTILS ═══ */
+const esc = s => String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let toastTimer;
+window.showToast = function(msg){
+  const t=document.getElementById('toast'); t.textContent=msg;
+  t.classList.add('show'); clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+};
+ 
+/* ═══ THEME ═══ */
+const root = document.documentElement;
+if(localStorage.getItem('adminMode')) root.setAttribute('data-mode',localStorage.getItem('adminMode'));
+document.getElementById('modeBtn').textContent = root.getAttribute('data-mode')==='dark'?'☀️':'🌙';
+window.toggleMode = function(){
+  const m=root.getAttribute('data-mode')==='dark'?'light':'dark';
+  root.setAttribute('data-mode',m); localStorage.setItem('adminMode',m);
+  document.getElementById('modeBtn').textContent=m==='dark'?'☀️':'🌙';
+};
+ 
+/* ═══ AUTH TABS ═══ */
+window.switchAuthTab = function(tab, btn){
+  document.querySelectorAll('.gate-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('loginForm').style.display = tab==='login'?'block':'none';
+  document.getElementById('registerForm').style.display = tab==='register'?'block':'none';
+  document.getElementById('gateErr').textContent='';
+};
+ 
+/* ═══ LOGIN / REGISTER ═══ */
+window.doLogin = async function(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const err=document.getElementById('gateErr');
+  if(!email||!pass){err.textContent='⚠️ أدخل البريد وكلمة السر';return;}
+  try{
+    await signInWithEmailAndPassword(auth,email,pass);
+  }catch(e){
+    err.textContent='❌ '+e.message.replace('Firebase:','').replace('(auth/invalid-credential).','بيانات الدخول غير صحيحة').replace('(auth/user-not-found).','الحساب غير موجود').replace('(auth/wrong-password).','كلمة السر خاطئة');
+  }
+};
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+ 
+window.doRegister = async function(){
+  const name=document.getElementById('regName').value.trim();
+  const spec=document.getElementById('regSpec').value;
+  const email=document.getElementById('regEmail').value.trim();
+  const pass=document.getElementById('regPass').value;
+  const err=document.getElementById('gateErr');
+  if(!name||!email||!pass){err.textContent='⚠️ أكمل جميع الحقول';return;}
+  if(pass.length<6){err.textContent='⚠️ كلمة السر 6 أحرف على الأقل';return;}
+  try{
+    const cred=await createUserWithEmailAndPassword(auth,email,pass);
+    await setDoc(doc(db,'teachers',cred.user.uid),{name,spec,email,createdAt:serverTimestamp()});
+    showToast('✅ تم إنشاء حسابك بنجاح! مرحباً يا '+name);
+  }catch(e){
+    err.textContent='❌ '+(e.code==='auth/email-already-in-use'?'البريد مسجّل من قبل':e.message);
+  }
+};
+ 
+window.doLogout = async function(){
+  await signOut(auth);
+};
+ 
+/* ═══ AUTH STATE ═══ */
+onAuthStateChanged(auth, async user=>{
+  if(user){
+    currentUser=user;
+    document.getElementById('gate').classList.add('hidden');
+    document.getElementById('shell').classList.add('show');
+    const tSnap=await getDoc(doc(db,'teachers',user.uid));
+    teacherProfile=tSnap.exists()?tSnap.data():{name:user.email, spec:'معلم'};
+    document.getElementById('sidebarName').textContent=teacherProfile.name||user.email;
+    document.getElementById('sidebarRole').textContent=specLabel(teacherProfile.spec||'other');
+    loadDashboard();
+    loadSubjects();
+  }else{
+    currentUser=null;
+    document.getElementById('gate').classList.remove('hidden');
+    document.getElementById('shell').classList.remove('show');
+  }
+});
+ 
+function specLabel(s){const m={arabic:'معلم عربي',english:'معلم إنجليزي',math:'معلم رياضيات',science:'معلم علوم',other:'معلم'};return m[s]||s;}
+ 
+/* ═══ NAV ═══ */
+const pageMeta=[
+  ['🏠 الرئيسية','نظرة عامة على نشاطك'],
+  ['📚 موادي','إدارة موادك الدراسية'],
+  ['📝 الدروس','إضافة وإدارة الدروس والمحتوى'],
+  ['❓ الاختبارات','إضافة وإدارة الاختبارات'],
+  ['🎯 تحدي اليوم','تحفيز الطلاب يومياً'],
+  ['🔴 البث المباشر','شرح مباشر للطلاب'],
+  ['📢 الإعلانات','إرسال إشعارات للطلاب'],
+];
+window.goPanel = function(i){
+  document.querySelectorAll('.panel').forEach((p,k)=>p.classList.toggle('show',k===i));
+  document.querySelectorAll('.snav-btn').forEach((b,k)=>b.classList.toggle('active',k===i));
+  document.getElementById('pageTitle').textContent=pageMeta[i][0];
+  document.getElementById('pageSub').textContent=pageMeta[i][1];
+  if(i===1) loadSubjects();
+  if(i===2){populateSubjSelect(); loadLessons();}
+  if(i===3){populateQuizSubj(); loadQuizList();}
+  if(i===4) loadChallenge();
+  if(i===5) loadBroadcast();
+  if(i===6) loadAnn();
+};
+ 
+/* ═══ DASHBOARD ═══ */
+async function loadDashboard(){
+  if(!currentUser) return;
+  try{
+    const snap=await getDocs(query(collection(db,'subjects'),where('teacherId','==',currentUser.uid)));
+    mySubjects=[];
+    let totalLessons=0;
+    snap.forEach(d=>{const s={id:d.id,...d.data()};mySubjects.push(s);totalLessons+=(s.lessonsCount||0);});
+    document.getElementById('ds0').textContent=mySubjects.length;
+    document.getElementById('ds1').textContent=totalLessons;
+    const qSnap=await getDocs(query(collection(db,'quizzes'),where('teacherId','==',currentUser.uid)));
+    document.getElementById('ds2').textContent=qSnap.size;
+    document.getElementById('ds3').textContent=mySubjects.length*10+qSnap.size*5;
+  }catch(e){}
+}
+ 
+/* ═══ SUBJECTS ═══ */
+async function loadSubjects(){
+  if(!currentUser) return;
+  const list=document.getElementById('subjList');
+  try{
+    const snap=await getDocs(query(collection(db,'subjects'),where('teacherId','==',currentUser.uid)));
+    mySubjects=[];
+    snap.forEach(d=>mySubjects.push({id:d.id,...d.data()}));
+    document.getElementById('subjCountBadge').textContent=mySubjects.length;
+    if(!mySubjects.length){list.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div>لم تضف أي مادة بعد</div></div>';return;}
+    list.innerHTML=mySubjects.map(s=>`
+      <div class="subj-item">
+        <div class="subj-icon">${s.icon||'📚'}</div>
+        <div class="subj-info">
+          <div class="subj-name">${esc(s.title)}</div>
+          <div class="subj-meta">${catLabel(s.category)} · ${s.lessonsCount||0} درس · ${s.storiesCount||0} قصة</div>
+        </div>
+        <div class="subj-actions">
+          <button class="btn btn-ghost btn-sm" onclick="editSubject('${s.id}')">✏️ تعديل</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteSubject('${s.id}','${esc(s.title)}')">🗑️ حذف</button>
+        </div>
+      </div>`).join('');
+    populateSubjSelect(); populateQuizSubj();
+  }catch(e){list.innerHTML='<div class="empty">⚠️ خطأ: '+esc(e.message)+'</div>';}
+}
+function catLabel(c){const m={arabic:'عربي',english:'إنجليزي',math:'رياضيات',science:'علوم',other:'أخرى'};return m[c]||c||'عام';}
+ 
+window.addSubject = async function(){
+  const icon=document.getElementById('subjIcon').value.trim()||'📚';
+  const title=document.getElementById('subjTitle').value.trim();
+  const cat=document.getElementById('subjCat').value;
+  const desc=document.getElementById('subjDesc').value.trim();
+  if(!title){showToast('⚠️ اكتب اسم المادة');return;}
+  try{
+    await addDoc(collection(db,'subjects'),{
+      icon,title,category:cat,desc,
+      teacherId:currentUser.uid,
+      teacherName:teacherProfile.name||currentUser.email,
+      lessonsCount:0,storiesCount:0,
+      createdAt:serverTimestamp()
+    });
+    document.getElementById('subjTitle').value='';
+    document.getElementById('subjDesc').value='';
+    document.getElementById('subjIcon').value='';
+    showToast('✅ تم نشر المادة للطلاب!');
+    loadSubjects(); loadDashboard();
+  }catch(e){showToast('❌ '+e.message);}
+};
+ 
+window.deleteSubject = async function(id,name){
+  if(!confirm('حذف مادة "'+name+'"؟ سيتم حذف كل دروسها أيضاً. هذا الإجراء لا يمكن التراجع عنه.')) return;
+  try{
+    await deleteDoc(doc(db,'subjects',id));
+    showToast('🗑️ تم حذف المادة'); loadSubjects(); loadDashboard();
+  }catch(e){showToast('❌ '+e.message);}
+};
+ 
+window.editSubject = async function(id){
+  const s=mySubjects.find(x=>x.id===id); if(!s) return;
+  const newTitle=prompt('اسم المادة الجديد:',s.title);
+  if(!newTitle) return;
+  const newDesc=prompt('الوصف الجديد:',s.desc||'');
+  try{
+    await updateDoc(doc(db,'subjects',id),{title:newTitle,desc:newDesc||''});
+    showToast('✅ تم تحديث المادة'); loadSubjects();
+  }catch(e){showToast('❌ '+e.message);}
+};
+ 
+function populateSubjSelect(){
+  const sel=document.getElementById('lessonSubj');
+  const sel2=document.getElementById('filterLessonSubj');
+  sel.innerHTML='<option value="">— اختر المادة —</option>'+mySubjects.map(s=>`<option value="${s.id}">${esc(s.icon||'📚')} ${esc(s.title)}</option>`).join('');
+  sel2.innerHTML='<option value="">الكل</option>'+mySubjects.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('');
+}
+function populateQuizSubj(){
+  const sel=document.getElementById('quizSubj');
+  sel.innerHTML='<option value="">— اختر المادة —</option>'+mySubjects.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('');
+}
+ 
+/* ═══ LESSONS ═══ */
+window.onTypeChange = function(){
+  const t=document.getElementById('lessonType').value;
+  document.getElementById('videoUrlRow').style.display=t==='video'?'flex':'none';
+};
+window.onSubjChange = function(){};
+ 
+window.addLesson = async function(){
+  const subjId=document.getElementById('lessonSubj').value;
+  const type=document.getElementById('lessonType').value;
+  const icon=document.getElementById('lessonIcon').value.trim()||'📖';
+  const title=document.getElementById('lessonTitle').value.trim();
+  const desc=document.getElementById('lessonDesc').value.trim();
+  const videoUrl=document.getElementById('lessonVideoUrl').value.trim();
+  if(!subjId){showToast('⚠️ اختر المادة الدراسية');return;}
+  if(!title){showToast('⚠️ اكتب عنوان الدرس');return;}
+  try{
+    await addDoc(collection(db,'lessons'),{
+      subjectId:subjId,type,icon,title,desc,videoUrl:videoUrl||'',
+      teacherId:currentUser.uid,
+      createdAt:serverTimestamp()
+    });
+    // update lessons count
+    const s=mySubjects.find(x=>x.id===subjId);
+    if(s) await updateDoc(doc(db,'subjects',subjId),{
+      lessonsCount:(s.lessonsCount||0)+1,
+      ...(type==='story'?{storiesCount:(s.storiesCount||0)+1}:{})
+    });
+    clearLessonForm();
+    showToast('✅ تم نشر الدرس!'); loadLessons(); loadDashboard();
+  }catch(e){showToast('❌ '+e.message);}
+};
+ 
+window.clearLessonForm = function(){
+  document.getElementById('lessonTitle').value='';
+  document.getElementById('lessonDesc').value='';
+  document.getElementById('lessonVideoUrl').value='';
+  document.getElementById('lessonIcon').value='';
+};
+ 
+window.loadLessons = async function(){
+  if(!currentUser) return;
+  const list=document.getElementById('lessonList');
+  const filterSubj=document.getElementById('filterLessonSubj').value;
+  list.innerHTML='<div style="color:var(--text3);padding:10px;">⏳ جارٍ التحميل...</div>';
+  try{
+    let q=query(collection(db,'lessons'),where('teacherId','==',currentUser.uid));
+    if(filterSubj) q=query(collection(db,'lessons'),where('teacherId','==',currentUser.uid),where('subjectId','==',filterSubj));
+    const snap=await getDocs(q);
+    document.getElementById('lessonCountBadge').textContent=snap.size;
+    if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div>لا توجد دروس بعد</div></div>';return;}
+    const rows=[];
+    snap.forEach(d=>rows.push({id:d.id,...d.data()}));
+    const typeLabel={lesson:'📖 درس',video:'🎬 فيديو',story:'📕 قصة',exercise:'✏️ تمرين'};
+    list.innerHTML=rows.map(r=>{
+      const s=mySubjects.find(x=>x.id===r.subjectId);
+      return`<div class="lesson-row">
+        <div class="lesson-row-head">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:22px;">${r.icon||'📖'}</span>
+            <div>
+              <div style="font-weight:800;font-size:14px;">${esc(r.title)}</div>
+              <div style="font-size:11px;color:var(--text2);">${typeLabel[r.type]||r.type} · ${s?esc(s.title):'غير محدد'}</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-danger btn-sm" onclick="deleteLesson('${r.id}','${r.subjectId}','${r.type}')">🗑️ حذف</button>
+          </div>
+        </div>
+        ${r.desc?`<div style="font-size:13px;color:var(--text2);">${esc(r.desc).substring(0,120)}...</div>`:''}
+        ${r.videoUrl?`<a href="${esc(r.videoUrl)}" target="_blank" style="font-size:12px;color:var(--p);direction:ltr;">🔗 ${esc(r.videoUrl).substring(0,50)}...</a>`:''}
+      </div>`;}).join('');
+  }catch(e){list.innerHTML='<div class="empty">⚠️ '+esc(e.message)+'</div>';}
+};
+ 
+window.deleteLesson = async function(id,subjId,type){
+  if(!confirm('حذف هذا الدرس نهائياً؟')) return;
+  try{
+    await deleteDoc(doc(db,'lessons',id));
+    const s=mySubjects.find(x=>x.id===subjId);
+    if(s){
+      const update={lessonsCount:Math.max(0,(s.lessonsCount||1)-1)};
+      if(type==='story') update.storiesCount=Math.max(0,(s.storiesCount||1)-1);
+      await updateDoc(doc(db,'subjects',subjId),update);
+    }
+    showToast('🗑️ تم حذف الدرس'); loadLessons(); loadDashboard();
+  }catch(e){showToast('❌ '+e.message);}
+};
+ 
+/* ═══ QUIZZES ═══ */
+window.addQuizQ = function(){
+  quizQCount++;
+  const wrap=document.getElementById('quizQuestions');
+  const div=document.createElement('div');
+  div.className='lesson-row'; div.id='qq'+quizQCount;
+  div.innerHTML=`
+    <div class="lesson-row-head">
+      <span class="row-num">سؤال ${quizQCount}</span>
+      <button class="btn btn-danger btn-sm" onclick="document.getElementById('qq${quizQCount}').remove()">✕</button>
+    </div>
+    <div class="form-row"><div class="form-group">
+      <label class="form-label">نص السؤال (إنجليزي أو عربي)</label>
+      <input type="text" class="form-input q-txt" placeholder="What is 2 + 2?">
+    </div></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">الإجابة الصحيحة</label>
+        <input type="text" class="form-input q-ans" dir="ltr" placeholder="4">
+      </div>
+      <div class="form-group"><label class="form-label">إجابات خاطئة (فصلها بفاصلة)</label>
+        <input type="text" class="form-input q-wrong" dir="ltr" placeholder="2, 3, 5">
+      </div>
+    </div>`;
+  wrap.appendChild(div);
+};
+ 
+window.saveQuiz = async function(){
+  const subjId=document.getElementById('quizSubj').value;
+  const title=document.getElementById('quizTitle').value.trim();
+  if(!subjId||!title){showToast('⚠️ اختر المادة واكتب عنوان الاختبار');return;}
+  const rows=document.querySelectorAll('#quizQuestions .lesson-row');
+  const questions=[];
+  rows.forEach(r=>{
+    const q=r.querySelector('.q-txt').value.trim();
+    const ans=r.querySelector('.q-ans').value.trim();
+    const wrongRaw=r.querySelector('.q-wrong').value.trim();
+    if(q&&ans&&wrongRaw){
+      const wrong=wrongRaw.split(',').map(s=>s.trim()).filter(Boolean);
+      questions.push({q,ans,choices:[ans,...wrong]});
+    }
+  });
+  if(!questions.length){showToast('⚠️ أضف على الأقل سؤالاً كاملاً');return;}
+  try{
+    await addDoc(collection(db,'quizzes'),{
+      subjectId:subjId,title,questions,
+      teacherId:currentUser.uid,
+      createdAt:serverTimestamp()
+    });
+    document.getElementById('quizTitle').value='';
+    document.getElementById('quizQuestions').innerHTML='';
+    quizQCount=0;
+    showToast('✅ تم نشر الاختبار!'); loadQuizList(); loadDashboard();
+  }catch(e){showToast('❌ '+e.message);}
+};
+ 
+window.loadQuizList = async function(){
+  const list=document.getElementById('quizList');
+  try{
+    const snap=await getDocs(query(collection(db,'quizzes'),where('teacherId','==',currentUser.uid)));
+    if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">❓</div><div>لا توجد اختبارات</div></div>';return;}
+    const rows=[];
+    snap.forEach(d=>rows.push({id:d.id,...d.data()}));
+    list.innerHTML=rows.map(r=>{
+      const s=mySubjects.find(x=>x.id===r.subjectId);
+      return`<div class="lesson-row">
+        <div class="lesson-row-head">
+          <div><div style="font-weight:800;">❓ ${esc(r.title)}</div>
+            <div style="font-size:11px;color:var(--text2);">${(r.questions||[]).length} سؤال · ${s?esc(s.title):'غير محدد'}</div>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="deleteQuiz('${r.id}')">🗑️ حذف</button>
+        </div>
+      </div>`;}).join('');
+  }catch(e){list.innerHTML='<div class="empty">⚠️ '+esc(e.message)+'</div>';}
+};
+ 
+window.deleteQuiz = async function(id){
+  if(!confirm('حذف هذا الاختبار نهائياً؟')) return;
+  await deleteDoc(doc(db,'quizzes',id));
+  showToast('🗑️ تم الحذف'); loadQuizList();
+};
+ 
+/* ═══ CHALLENGE ═══ */
+window.saveChallenge = async function(active){
+  if(active){
+    const title=document.getElementById('chalTitle').value.trim();
+    const desc=document.getElementById('chalDesc').value.trim();
+    const points=parseInt(document.getElementById('chalPts').value)||50;
+    if(!title){showToast('⚠️ اكتب عنوان التحدي');return;}
+    await setDoc(doc(db,'challenges','today'),{title,description:desc,points,active:true,updatedAt:serverTimestamp()});
+    showToast('🚀 تم نشر التحدي!');
+  }else{
+    await updateDoc(doc(db,'challenges','today'),{active:false});
+    showToast('⏸ تم إخفاء التحدي');
+  }
+  loadChallenge();
+};
+ 
+async function loadChallenge(){
+  const wrap=document.getElementById('chalCurrent');
+  try{
+    const snap=await getDoc(doc(db,'challenges','today'));
+    if(snap.exists()){
+      const c=snap.data();
+      wrap.innerHTML=`<div style="background:var(--p3);border-radius:14px;padding:16px;">
+        <div style="font-size:12px;color:var(--p);font-weight:800;margin-bottom:6px;">${c.active?'🟢 نشط':'🔴 مخفي'}</div>
+        <div style="font-weight:800;font-size:15px;margin-bottom:4px;">${esc(c.title||'')}</div>
+        <div style="font-size:13px;color:var(--text2);">${esc(c.description||'')}</div>
+        <div style="margin-top:8px;font-weight:900;color:var(--gold);">🏅 ${c.points||0} نقطة</div>
+      </div>`;
+    }else{ wrap.innerHTML='<div class="empty"><div class="empty-icon">🎯</div><div>لا يوجد تحدٍّ</div></div>'; }
+  }catch(e){}
+}
+ 
+/* ═══ BROADCAST ═══ */
+const PLATFORMS={meet:{icon:'🎥',label:'Google Meet'},facebook:{icon:'📘',label:'Facebook'},youtube:{icon:'▶️',label:'YouTube'},telegram:{icon:'✈️',label:'Telegram'},zoom:{icon:'💻',label:'Zoom'}};
+ 
+window.publishBroadcast = async function(){
+  const title=document.getElementById('liveTitle').value.trim();
+  const platform=document.getElementById('livePlatform').value;
+  const link=document.getElementById('liveLink').value.trim();
+  if(!title||!link||!/^https?:\/\//i.test(link)){showToast('⚠️ أدخل العنوان ورابطاً صحيحاً');return;}
+  await setDoc(doc(db,'broadcasts','live'),{title,platform,link,active:true,createdAt:serverTimestamp()});
+  showToast('🔴 تم نشر البث! يظهر فوراً للطلاب'); loadBroadcast();
+};
+ 
+window.endBroadcast = async function(){
+  if(!confirm('إيقاف البث الحالي؟')) return;
+  await updateDoc(doc(db,'broadcasts','live'),{active:false});
+  showToast('⏹ تم إيقاف البث'); loadBroadcast();
+};
+ 
+async function loadBroadcast(){
+  const card=document.getElementById('liveCurrent');
+  const content=document.getElementById('liveCurrentContent');
+  try{
+    const snap=await getDoc(doc(db,'broadcasts','live'));
+    if(snap.exists()&&snap.data().active){
+      const b=snap.data();
+      const p=PLATFORMS[b.platform]||{icon:'🔴',label:b.platform};
+      content.innerHTML=`<div style="font-size:14px;font-weight:800;">${p.icon} ${esc(b.title)}</div>
+        <div style="font-size:12px;color:var(--text2);margin:4px 0;">${p.label}</div>
+        <a href="${esc(b.link)}" target="_blank" style="font-size:12px;color:var(--p);direction:ltr;">${esc(b.link)}</a>`;
+      card.style.display='block';
+    }else{ card.style.display='none'; }
+  }catch(e){ card.style.display='none'; }
+}
+ 
+/* ═══ ANNOUNCEMENTS ═══ */
+window.publishAnn = async function(){
+  const text=document.getElementById('annText').value.trim();
+  const type=document.getElementById('annType').value;
+  const days=parseInt(document.getElementById('annDays').value)||3;
+  if(!text){showToast('⚠️ اكتب نص الإعلان');return;}
+  const expiresAt=new Date(Date.now()+days*864e5);
+  await addDoc(collection(db,'announcements'),{text,type,expiresAt,teacherId:currentUser.uid,createdAt:serverTimestamp()});
+  document.getElementById('annText').value='';
+  showToast('✅ تم نشر الإعلان!'); loadAnn();
+};
+ 
+async function loadAnn(){
+  const list=document.getElementById('annList');
+  const icons={info:'ℹ️',success:'🎉',warning:'⚠️'};
+  try{
+    const snap=await getDocs(query(collection(db,'announcements'),where('teacherId','==',currentUser.uid)));
+    if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">📢</div><div>لا توجد إعلانات</div></div>';return;}
+    const rows=[];
+    snap.forEach(d=>rows.push({id:d.id,...d.data()}));
+    rows.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+    list.innerHTML=rows.map(r=>`
+      <div class="lesson-row">
+        <div class="lesson-row-head">
+          <div><div style="font-weight:800;">${icons[r.type]||'ℹ️'} ${esc(r.text)}</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px;">ينتهي: ${r.expiresAt?.toDate?r.expiresAt.toDate().toLocaleDateString('ar-EG'):''}</div>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="deleteAnn('${r.id}')">🗑️ حذف</button>
+        </div>
+      </div>`).join('');
+  }catch(e){list.innerHTML='<div class="empty">⚠️ '+esc(e.message)+'</div>';}
+}
+ 
+window.deleteAnn = async function(id){
+  await deleteDoc(doc(db,'announcements',id));
+  showToast('🗑️ تم حذف الإعلان'); loadAnn();
+};
+ 
+/* ═══ KEYBOARD LOGIN ═══ */
+['loginEmail','loginPass'].forEach(id=>{
+  document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+});
+</script>
+</body>
+</html>
