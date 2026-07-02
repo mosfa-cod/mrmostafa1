@@ -1,5 +1,4 @@
-
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -739,7 +738,7 @@ async function loadSubjects(){
           <button class="btn btn-danger btn-sm" onclick="deleteSubject('${s.id}','${esc(s.title)}')">🗑️ حذف</button>
         </div>
       </div>`).join('');
-    populateSubjSelect(); populateQuizSubj();
+    // الـ dropdown يتحدث من loadAllSubjectsForSelect فقط لمنع التكرار
   }catch(e){list.innerHTML='<div class="empty">⚠️ خطأ: '+esc(e.message)+'</div>';}
 }
 function catLabel(c){const m={arabic:'عربي',english:'إنجليزي',math:'رياضيات',science:'علوم',other:'أخرى'};return m[c]||c||'عام';}
@@ -785,43 +784,56 @@ window.editSubject = async function(id){
   }catch(e){showToast('❌ '+e.message);}
 };
 
-/* allSubjects — كل مواد السنتر (للـ dropdown عند إضافة درس/اختبار)
-   مستقلة عن mySubjects اللي تعرض فقط مواد المدرس في قائمة "موادي" */
 let allSubjectsForSelect = [];
+let _populating = false; // حارس لمنع التكرار
 
 async function loadAllSubjectsForSelect(){
+  if(_populating) return; // منع الاستدعاء المتزامن
+  _populating = true;
   try{
     const snap = await getDocs(collection(db,'subjects'));
     allSubjectsForSelect = [];
     snap.forEach(d => allSubjectsForSelect.push({id:d.id,...d.data()}));
-    populateSubjSelect();
-    populateQuizSubj();
+    _populateSelects();
   }catch(e){}
+  finally{ _populating = false; }
 }
 
-function populateSubjSelect(){
+/* دالة داخلية واحدة تبني الـ select بدون Emoji (تسبب □) */
+function _populateSelects(){
   const sel  = document.getElementById('lessonSubj');
   const sel2 = document.getElementById('filterLessonSubj');
-  // lessonSubj → كل المواد بلا تصفية ليختار أي مدرس أي مادة
-  sel.innerHTML = '<option value="">— اختر المادة —</option>'
-    + allSubjectsForSelect.map(s =>
-        `<option value="${s.id}">${esc(s.icon||'📚')} ${esc(s.title)}${s.teacherName?' — '+esc(s.teacherName):''}</option>`
-      ).join('');
-  // filterLessonSubj → نفس الكل (للفلترة في قائمة دروسي)
-  sel2.innerHTML = '<option value="">الكل</option>'
-    + allSubjectsForSelect.map(s =>
-        `<option value="${s.id}">${esc(s.title)}</option>`
-      ).join('');
+  const sel3 = document.getElementById('quizSubj');
+
+  function buildOpts(el, withAll){
+    if(!el) return;
+    // احفظ القيمة الحالية لإعادة تحديدها بعد إعادة البناء
+    const prev = el.value;
+    el.innerHTML = '';
+    const def = document.createElement('option');
+    def.value = '';
+    def.textContent = withAll ? 'الكل' : '— اختر المادة —';
+    el.appendChild(def);
+    allSubjectsForSelect.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.id;
+      // بدون Emoji — نص فقط عشان ما يظهرش مربعات □
+      opt.textContent = (s.title||'بدون عنوان')
+        + (s.teacherName ? '  (' + s.teacherName + ')' : '');
+      el.appendChild(opt);
+    });
+    // أعد تحديد القيمة السابقة إن كانت لا تزال موجودة
+    if(prev) el.value = prev;
+  }
+
+  buildOpts(sel,  false); // قائمة إضافة درس
+  buildOpts(sel2, true);  // قائمة تصفية الدروس
+  buildOpts(sel3, false); // قائمة إضافة اختبار
 }
 
-function populateQuizSubj(){
-  const sel = document.getElementById('quizSubj');
-  // كل المواد أيضاً ليضيف أي مدرس اختباراً على أي مادة
-  sel.innerHTML = '<option value="">— اختر المادة —</option>'
-    + allSubjectsForSelect.map(s =>
-        `<option value="${s.id}">${esc(s.title)}${s.teacherName?' — '+esc(s.teacherName):''}</option>`
-      ).join('');
-}
+/* wrapper متوافق مع الاستدعاءات القديمة */
+function populateSubjSelect(){ _populateSelects(); }
+function populateQuizSubj()  { _populateSelects(); }
 
 /* ═══ LESSONS ═══ */
 window.onTypeChange = function(){
