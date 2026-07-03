@@ -4,196 +4,291 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>لوحة تحكم المعلم · منصة مستر مصطفى</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --p:#7C3AED;--p2:#5B21B6;--p3:#EDE9FE;
-  --gold:#F59E0B;--teal:#10B981;--rose:#F43F5E;
-  --bg:#F8F7FF;--card:#FFFFFF;--card2:#F3F4F6;
-  --text:#1F2937;--text2:#6B7280;--text3:#9CA3AF;
-  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.14);
-  --shadow:0 4px 24px rgba(124,58,237,.12);
-  --shadow2:0 2px 10px rgba(0,0,0,.06);
-  --r:14px;--r2:20px;--tr:.3s;
+  --p:#7C3AED;--p2:#5B21B6;--p3:#EDE9FE;--p4:#F5F3FF;
+  --gold:#F59E0B;--teal:#10B981;--rose:#F43F5E;--blue:#3B82F6;
+  --bg:#F0EDFF;--card:#FFFFFF;--card2:#F5F3FF;
+  --text:#1F1035;--text2:#6B5CA5;--text3:#9D8EC4;
+  --border:rgba(124,58,237,.13);--border2:rgba(124,58,237,.25);
+  --shadow:0 8px 32px rgba(124,58,237,.18);
+  --shadow2:0 2px 14px rgba(124,58,237,.10);
+  --r:16px;--r2:24px;--tr:.3s cubic-bezier(.4,0,.2,1);
 }
 [data-mode=dark]{
-  --bg:#0F0A1E;--card:#1E1540;--card2:#251B4E;
-  --text:#F1F0FF;--text2:#C4B5FD;--text3:#7C6FCD;
-  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
-  --shadow:0 4px 24px rgba(124,58,237,.3);
-  --shadow2:0 2px 10px rgba(0,0,0,.4);
+  --bg:#0D0820;--card:#1A1040;--card2:#231558;
+  --text:#F1EEFF;--text2:#C4B5FD;--text3:#7C6FCD;
+  --border:rgba(167,139,250,.13);--border2:rgba(167,139,250,.25);
+  --shadow:0 8px 32px rgba(124,58,237,.38);
+  --shadow2:0 2px 14px rgba(0,0,0,.42);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
-  transition:background var(--tr),color var(--tr);min-height:100vh;}
+html{font-size:16px;}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);
+  transition:background .35s,color .35s;min-height:100vh;font-size:1rem;}
 
-/* ═══ LOGIN ═══ */
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--p3);border-radius:3px;}
+
+/* ═══ GATE ═══ */
 .gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;
-  justify-content:center;background:linear-gradient(135deg,var(--p),var(--p2));
-  padding:20px;}
+  justify-content:center;padding:20px;
+  background:linear-gradient(135deg,#3B1FA8 0%,#7C3AED 50%,#A855F7 100%);}
 .gate.hidden{display:none;}
-.gate-box{width:100%;max-width:420px;background:var(--card);border-radius:var(--r2);
-  padding:40px 32px;box-shadow:0 32px 80px rgba(0,0,0,.3);animation:popIn .4s;}
-@keyframes popIn{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
-.gate-logo{text-align:center;font-size:52px;margin-bottom:8px;}
-.gate-title{text-align:center;font-size:22px;font-weight:900;color:var(--p);margin-bottom:4px;}
-.gate-sub{text-align:center;font-size:13px;color:var(--text2);margin-bottom:28px;}
-.gate-tabs{display:flex;gap:0;margin-bottom:24px;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
-.gate-tab{flex:1;padding:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:700;
-  font-family:inherit;border:none;background:var(--card2);color:var(--text2);transition:all .2s;}
-.gate-tab.active{background:var(--p);color:#fff;}
-.form-group{margin-bottom:14px;}
-.form-label{display:block;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:5px;}
-.form-input{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);
-  background:var(--card2);color:var(--text);font-family:inherit;font-size:14px;outline:none;
-  transition:border-color .2s;}
-.form-input:focus{border-color:var(--p);}
-.gate-btn{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--p),var(--p2));
-  color:#fff;font-size:15px;font-weight:900;border:none;cursor:pointer;font-family:inherit;
-  box-shadow:0 5px 20px rgba(124,58,237,.35);transition:all .2s;margin-top:8px;}
-.gate-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,.45);}
+.gate::before{content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+.gate-box{width:100%;max-width:440px;background:rgba(255,255,255,.97);
+  border-radius:28px;padding:44px 36px;box-shadow:0 40px 100px rgba(0,0,0,.35);
+  animation:popIn .45s cubic-bezier(.34,1.56,.64,1);}
+[data-mode=dark] .gate-box{background:rgba(26,16,64,.97);}
+@keyframes popIn{from{transform:scale(.8) translateY(30px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.gate-logo{text-align:center;font-size:64px;margin-bottom:10px;
+  animation:bounceIn 1s cubic-bezier(.34,1.56,.64,1);}
+@keyframes bounceIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.gate-title{text-align:center;font-size:1.7rem;font-weight:900;
+  background:linear-gradient(135deg,var(--p),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:4px;}
+.gate-sub{text-align:center;font-size:1rem;color:var(--text2);margin-bottom:28px;}
+.gate-tabs{display:flex;gap:0;margin-bottom:24px;border-radius:14px;
+  overflow:hidden;border:2px solid var(--border2);background:var(--bg);}
+.gate-tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-size:1rem;
+  font-weight:800;font-family:inherit;border:none;background:transparent;
+  color:var(--text2);transition:all .25s;}
+.gate-tab.active{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;}
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:1rem;font-weight:800;color:var(--text2);margin-bottom:6px;}
+.form-input,.form-select,.form-textarea{width:100%;padding:13px 16px;border-radius:14px;
+  border:2px solid var(--border);background:var(--card2);color:var(--text);
+  font-family:'Cairo',sans-serif;font-size:1rem;outline:none;
+  transition:border-color .25s,box-shadow .25s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:var(--p);box-shadow:0 0 0 4px rgba(124,58,237,.12);}
+.gate-btn{width:100%;padding:15px;border-radius:14px;
+  background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;
+  font-size:1.1rem;font-weight:900;border:none;cursor:pointer;font-family:inherit;
+  box-shadow:0 6px 22px rgba(124,58,237,.4);transition:all .25s;margin-top:10px;
+  position:relative;overflow:hidden;}
+.gate-btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:.25s;}
+.gate-btn:hover::after{background:rgba(255,255,255,.12);}
+.gate-btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(124,58,237,.5);}
 .gate-btn:active{transform:translateY(0);}
-.gate-err{margin-top:10px;font-size:12px;color:var(--rose);font-weight:700;text-align:center;min-height:18px;}
+.gate-err{margin-top:12px;font-size:.95rem;color:var(--rose);font-weight:700;
+  text-align:center;min-height:20px;}
 
 /* ═══ SHELL ═══ */
 .shell{display:none;min-height:100vh;}
 .shell.show{display:flex;}
 
 /* ═══ SIDEBAR ═══ */
-.sidebar{width:240px;min-height:100vh;background:var(--card);border-left:1px solid var(--border);
-  display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0;}
-.sidebar-brand{padding:20px 16px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:10px;}
-.sidebar-logo{width:38px;height:38px;border-radius:10px;
-  background:linear-gradient(135deg,var(--p),var(--p2));
-  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.sidebar-name{font-size:13px;font-weight:800;color:var(--text);}
-.sidebar-role{font-size:11px;color:var(--text2);}
-.sidebar-nav{padding:14px 10px;flex:1;}
-.snav-section{font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;
-  letter-spacing:.8px;padding:8px 8px 4px;}
-.snav-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;
-  border-radius:12px;border:none;background:transparent;color:var(--text2);
-  font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;text-align:right;
-  transition:all .2s;margin-bottom:2px;}
-.snav-btn:hover,.snav-btn.active{background:var(--p3);color:var(--p);}
-.snav-icon{font-size:16px;flex-shrink:0;}
-.sidebar-footer{padding:14px;border-top:1px solid var(--border);}
-.logout-btn{width:100%;padding:10px;border-radius:10px;background:rgba(244,63,94,.1);
-  border:1px solid rgba(244,63,94,.2);color:var(--rose);font-size:13px;font-weight:700;
-  cursor:pointer;font-family:inherit;}
+.sidebar{width:260px;min-height:100vh;flex-shrink:0;
+  background:linear-gradient(175deg,#2E1080 0%,#5B21B6 50%,#7C3AED 100%);
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh;
+  overflow-y:auto;box-shadow:6px 0 28px rgba(59,31,168,.4);}
+.sidebar-brand{padding:24px 18px 20px;border-bottom:1px solid rgba(255,255,255,.12);
+  display:flex;align-items:center;gap:12px;}
+.sidebar-logo{width:48px;height:48px;border-radius:14px;
+  background:rgba(255,255,255,.18);display:flex;align-items:center;
+  justify-content:center;font-size:24px;flex-shrink:0;
+  border:1.5px solid rgba(255,255,255,.3);
+  box-shadow:0 4px 16px rgba(0,0,0,.2);}
+.sidebar-name{font-size:1rem;font-weight:800;color:#fff;line-height:1.3;}
+.sidebar-role{font-size:.85rem;color:rgba(255,255,255,.65);margin-top:2px;}
+.sidebar-nav{padding:16px 12px;flex:1;}
+.snav-section{font-size:.78rem;font-weight:800;color:rgba(255,255,255,.4);
+  text-transform:uppercase;letter-spacing:1px;padding:12px 10px 5px;}
+.snav-btn{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;
+  border-radius:14px;border:none;background:transparent;color:rgba(255,255,255,.75);
+  font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;
+  text-align:right;transition:all .22s;margin-bottom:3px;}
+.snav-btn:hover{background:rgba(255,255,255,.14);color:#fff;transform:translateX(-3px);}
+.snav-btn.active{background:rgba(255,255,255,.2);color:#fff;
+  box-shadow:0 4px 14px rgba(0,0,0,.25);}
+.snav-icon{font-size:18px;flex-shrink:0;}
+.sidebar-footer{padding:16px;border-top:1px solid rgba(255,255,255,.12);}
+.logout-btn{width:100%;padding:12px;border-radius:12px;
+  background:rgba(244,63,94,.18);border:1.5px solid rgba(244,63,94,.35);
+  color:#FFB3C1;font-size:1rem;font-weight:800;cursor:pointer;
+  font-family:'Cairo',sans-serif;transition:all .22s;}
+.logout-btn:hover{background:var(--rose);color:#fff;border-color:var(--rose);
+  transform:scale(1.03);}
 
 /* ═══ MAIN ═══ */
-.main{flex:1;overflow-y:auto;padding:24px;}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
-.page-title{font-size:20px;font-weight:900;}
-.page-sub{font-size:13px;color:var(--text2);margin-top:2px;}
-.ctrl-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);
-  background:var(--card);cursor:pointer;display:flex;align-items:center;
-  justify-content:center;font-size:16px;color:var(--text);transition:all .2s;}
-.ctrl-btn:hover{border-color:var(--p);background:var(--p3);}
+.main{flex:1;overflow-y:auto;padding:24px;
+  background:linear-gradient(160deg,var(--bg) 0%,#ECE5FF 100%);}
+[data-mode=dark] .main{background:linear-gradient(160deg,#0D0820 0%,#160E35 100%);}
+
+/* ═══ TOPBAR ═══ */
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;flex-wrap:wrap;gap:12px;
+  background:var(--card);border-radius:var(--r2);padding:18px 24px;
+  box-shadow:var(--shadow2);border:1px solid var(--border);}
+.page-title{font-size:1.4rem;font-weight:900;color:var(--text);}
+.page-sub{font-size:.95rem;color:var(--text2);margin-top:2px;}
+.ctrl-btn{width:40px;height:40px;border-radius:12px;border:2px solid var(--border);
+  background:var(--card2);cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:18px;color:var(--text);transition:all .22s;}
+.ctrl-btn:hover{border-color:var(--p);background:var(--p3);color:var(--p);
+  transform:rotate(15deg) scale(1.1);}
 
 /* ═══ PANELS ═══ */
-.panel{display:none;animation:fadeIn .3s;}
+.panel{display:none;animation:fadeUp .35s var(--tr);}
 .panel.show{display:block;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
-/* ═══ STATS ROW ═══ */
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px;}
-.stat-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);
-  padding:18px;box-shadow:var(--shadow2);}
-.stat-icon{font-size:26px;margin-bottom:8px;}
-.stat-val{font-size:28px;font-weight:900;color:var(--p);}
-.stat-lbl{font-size:12px;color:var(--text2);font-weight:700;}
+/* ═══ STATS ═══ */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:16px;margin-bottom:24px;}
+.stat-card{border-radius:var(--r2);padding:22px;position:relative;overflow:hidden;
+  cursor:default;transition:transform .25s,box-shadow .25s;}
+.stat-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.2);}
+.stat-card:nth-child(1){background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 100%);}
+.stat-card:nth-child(2){background:linear-gradient(135deg,#10B981 0%,#059669 100%);}
+.stat-card:nth-child(3){background:linear-gradient(135deg,#F59E0B 0%,#D97706 100%);}
+.stat-card:nth-child(4){background:linear-gradient(135deg,#F43F5E 0%,#BE123C 100%);}
+.stat-card::after{content:'';position:absolute;top:-24px;left:-24px;
+  width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.1);}
+.stat-card::before{content:'';position:absolute;bottom:-18px;right:-18px;
+  width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.07);}
+.stat-icon{font-size:32px;margin-bottom:10px;position:relative;z-index:1;}
+.stat-val{font-size:2.2rem;font-weight:900;color:#fff;position:relative;z-index:1;
+  animation:countUp .6s var(--tr);}
+@keyframes countUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.stat-lbl{font-size:1rem;color:rgba(255,255,255,.85);font-weight:700;
+  position:relative;z-index:1;}
 
-/* ═══ CARD ═══ */
+/* ═══ CARDS ═══ */
 .card{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);
-  padding:22px;box-shadow:var(--shadow2);margin-bottom:18px;}
-.card-title{font-size:15px;font-weight:900;color:var(--text);margin-bottom:18px;
-  display:flex;align-items:center;gap:8px;}
-.card-title .badge{padding:3px 10px;border-radius:8px;font-size:10px;font-weight:800;
-  background:var(--p3);color:var(--p);}
+  padding:24px;box-shadow:var(--shadow2);margin-bottom:20px;
+  position:relative;overflow:hidden;transition:box-shadow .25s;}
+.card:hover{box-shadow:var(--shadow);}
+.card::before{content:'';position:absolute;top:0;right:0;
+  width:5px;height:100%;
+  background:linear-gradient(to bottom,var(--p),var(--teal));}
+.card-title{font-size:1.15rem;font-weight:900;color:var(--text);
+  margin-bottom:20px;display:flex;align-items:center;gap:10px;padding-right:10px;}
+.card-title .badge{padding:4px 12px;border-radius:10px;font-size:.8rem;font-weight:800;
+  background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;}
 
 /* ═══ FORM ═══ */
-.form-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.form-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
 .form-group{flex:1;min-width:180px;}
-.form-label{display:block;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:5px;}
-.form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;border-radius:12px;
-  border:1.5px solid var(--border);background:var(--bg);color:var(--text);
-  font-family:inherit;font-size:13px;outline:none;transition:.2s;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--p);}
-.form-textarea{resize:vertical;min-height:80px;}
-.form-input[dir=ltr]{direction:ltr;text-align:left;}
+.form-label{display:block;font-size:1rem;font-weight:800;color:var(--text2);margin-bottom:6px;}
+.form-input,.form-select,.form-textarea{width:100%;padding:12px 14px;border-radius:14px;
+  border:2px solid var(--border);background:var(--card2);color:var(--text);
+  font-family:'Cairo',sans-serif;font-size:1rem;outline:none;transition:all .22s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:var(--p);box-shadow:0 0 0 4px rgba(124,58,237,.12);}
+.form-textarea{resize:vertical;min-height:90px;}
 
 /* ═══ BUTTONS ═══ */
-.btn{padding:10px 20px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;
-  font-size:13px;font-weight:800;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn{padding:11px 22px;border-radius:14px;border:none;cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:1rem;font-weight:800;
+  transition:all .22s;display:inline-flex;align-items:center;gap:7px;
+  position:relative;overflow:hidden;}
+.btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:.22s;}
+.btn:hover::after{background:rgba(255,255,255,.12);}
+.btn:hover{transform:translateY(-3px);}
+.btn:active{transform:translateY(0) scale(.97);}
 .btn-primary{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;
-  box-shadow:0 4px 14px rgba(124,58,237,.3);}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,58,237,.4);}
-.btn-teal{background:linear-gradient(135deg,var(--teal),#059669);color:#fff;}
-.btn-danger{background:rgba(244,63,94,.1);color:var(--rose);border:1px solid rgba(244,63,94,.25);}
-.btn-danger:hover{background:var(--rose);color:#fff;}
-.btn-sm{padding:6px 12px;font-size:11px;border-radius:9px;}
-.btn-ghost{background:var(--bg);border:1.5px solid var(--border);color:var(--text2);}
-.btn-ghost:hover{border-color:var(--p);color:var(--p);}
+  box-shadow:0 5px 18px rgba(124,58,237,.38);}
+.btn-primary:hover{box-shadow:0 10px 28px rgba(124,58,237,.5);}
+.btn-teal{background:linear-gradient(135deg,var(--teal),#059669);color:#fff;
+  box-shadow:0 5px 18px rgba(16,185,129,.35);}
+.btn-teal:hover{box-shadow:0 10px 28px rgba(16,185,129,.48);}
+.btn-danger{background:rgba(244,63,94,.1);color:var(--rose);
+  border:2px solid rgba(244,63,94,.22);}
+.btn-danger:hover{background:var(--rose);color:#fff;border-color:var(--rose);}
+.btn-ghost{background:var(--card2);border:2px solid var(--border);color:var(--text2);}
+.btn-ghost:hover{border-color:var(--p);color:var(--p);background:var(--p3);}
+.btn-sm{padding:7px 14px;font-size:.88rem;border-radius:10px;}
 
 /* ═══ TABLE ═══ */
 .table-wrap{overflow-x:auto;border-radius:var(--r);}
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th{text-align:right;padding:10px 12px;color:var(--text3);font-weight:800;font-size:11px;
-  border-bottom:2px solid var(--border);white-space:nowrap;background:var(--bg);}
-td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text2);}
-tr:hover td{background:var(--p3);}
-.chip{padding:4px 10px;border-radius:8px;font-size:10.5px;font-weight:800;white-space:nowrap;}
+table{width:100%;border-collapse:collapse;font-size:1rem;}
+th{text-align:right;padding:12px 14px;color:var(--text3);font-weight:800;font-size:.88rem;
+  border-bottom:2px solid var(--border);white-space:nowrap;background:var(--card2);}
+td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text2);}
+tr{transition:background .2s;}
+tr:hover td{background:var(--p4);}
+.chip{padding:5px 12px;border-radius:10px;font-size:.85rem;font-weight:800;white-space:nowrap;}
 .chip-on{background:rgba(16,185,129,.12);color:var(--teal);}
 .chip-off{background:rgba(244,63,94,.12);color:var(--rose);}
 .chip-p{background:var(--p3);color:var(--p);}
 
 /* ═══ LESSON ROWS ═══ */
-.lesson-row{background:var(--bg);border:1px solid var(--border);border-radius:14px;
-  padding:14px;margin-bottom:10px;}
-.lesson-row-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.row-num{font-size:11px;color:var(--text3);font-weight:800;}
+.lesson-row{background:var(--card2);border:2px solid var(--border);border-radius:16px;
+  padding:16px;margin-bottom:12px;transition:all .22s;}
+.lesson-row:hover{border-color:var(--p);box-shadow:var(--shadow2);
+  transform:translateX(-3px);}
+.lesson-row-head{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px;}
+.row-num{font-size:.88rem;color:var(--text3);font-weight:800;}
 
-/* ═══ SUBJECTS LIST ═══ */
-.subj-item{display:flex;align-items:center;gap:14px;padding:14px;
-  background:var(--bg);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;
-  transition:all .2s;}
-.subj-item:hover{border-color:var(--p);box-shadow:var(--shadow2);}
-.subj-icon{width:48px;height:48px;border-radius:14px;background:var(--p3);
-  display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+/* ═══ SUBJECTS ═══ */
+.subj-item{display:flex;align-items:center;gap:16px;padding:16px;
+  background:var(--card2);border:2px solid var(--border);border-radius:var(--r2);
+  margin-bottom:12px;transition:all .22s;cursor:default;}
+.subj-item:hover{border-color:var(--p);box-shadow:var(--shadow2);transform:translateX(-4px);}
+.subj-icon{width:54px;height:54px;border-radius:16px;
+  background:linear-gradient(135deg,var(--p3),var(--p4));
+  display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;
+  border:2px solid var(--border2);}
 .subj-info{flex:1;}
-.subj-name{font-size:14px;font-weight:800;}
-.subj-meta{font-size:12px;color:var(--text2);margin-top:2px;}
-.subj-actions{display:flex;gap:6px;}
+.subj-name{font-size:1.05rem;font-weight:800;margin-bottom:3px;}
+.subj-meta{font-size:.9rem;color:var(--text2);}
+.subj-actions{display:flex;gap:8px;}
 
-/* ═══ EMPTY ═══ */
-.empty{text-align:center;padding:40px;color:var(--text3);}
-.empty-icon{font-size:48px;margin-bottom:10px;}
+/* ═══ QUICK ACTIONS ═══ */
+.quick-actions{display:flex;flex-wrap:wrap;gap:12px;}
+.qa-btn{padding:14px 22px;border-radius:16px;border:none;cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:1rem;font-weight:800;
+  display:flex;align-items:center;gap:8px;transition:all .25s;
+  position:relative;overflow:hidden;}
+.qa-btn:hover{transform:translateY(-4px);}
+.qa-btn:active{transform:translateY(0);}
+.qa-1{background:linear-gradient(135deg,#7C3AED,#5B21B6);color:#fff;
+  box-shadow:0 6px 20px rgba(124,58,237,.4);}
+.qa-2{background:linear-gradient(135deg,#10B981,#059669);color:#fff;
+  box-shadow:0 6px 20px rgba(16,185,129,.38);}
+.qa-3{background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;
+  box-shadow:0 6px 20px rgba(245,158,11,.38);}
+.qa-4{background:linear-gradient(135deg,#F43F5E,#BE123C);color:#fff;
+  box-shadow:0 6px 20px rgba(244,63,94,.38);}
+
+/* ═══ EMPTY STATE ═══ */
+.empty{text-align:center;padding:48px 24px;color:var(--text3);}
+.empty-icon{font-size:56px;margin-bottom:14px;
+  animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.empty-text{font-size:1.05rem;font-weight:700;}
 
 /* ═══ TOAST ═══ */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
-  background:var(--p);color:#fff;padding:12px 24px;border-radius:14px;
-  font-size:13px;font-weight:700;z-index:9999;transition:transform .38s;
-  box-shadow:0 8px 28px rgba(0,0,0,.3);white-space:nowrap;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(90px);
+  background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;
+  padding:14px 28px;border-radius:16px;font-size:1rem;font-weight:700;
+  z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 10px 32px rgba(124,58,237,.45);white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
-/* ═══ PROGRESS ═══ */
-.progress-bar{height:6px;border-radius:3px;background:var(--border);overflow:hidden;margin:4px 0;}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--teal));transition:width .5s;}
-
+/* ═══ RESPONSIVE ═══ */
 @media(max-width:768px){
   .sidebar{display:none;}
   .main{padding:16px;}
+  .gate-box{padding:30px 22px;}
+}
+@media(max-width:480px){
+  .qa-btn span:last-child{display:none;}
 }
 </style>
 </head>
 <body data-mode="light">
-
 <div class="toast" id="toast"></div>
 
-<!-- ══ LOGIN GATE ══ -->
+<!-- ══ GATE ══ -->
 <div class="gate" id="gate">
   <div class="gate-box">
     <div class="gate-logo">👨‍🏫</div>
@@ -203,8 +298,6 @@ tr:hover td{background:var(--p3);}
       <button class="gate-tab active" onclick="switchAuthTab('login',this)">تسجيل الدخول</button>
       <button class="gate-tab" onclick="switchAuthTab('register',this)">تسجيل معلم جديد</button>
     </div>
-
-    <!-- Login form -->
     <div id="loginForm">
       <div class="form-group">
         <label class="form-label">البريد الإلكتروني</label>
@@ -216,8 +309,6 @@ tr:hover td{background:var(--p3);}
       </div>
       <button class="gate-btn" onclick="doLogin()">دخول 🚀</button>
     </div>
-
-    <!-- Register form -->
     <div id="registerForm" style="display:none;">
       <div class="form-group">
         <label class="form-label">الاسم الكامل</label>
@@ -249,8 +340,6 @@ tr:hover td{background:var(--p3);}
 
 <!-- ══ SHELL ══ -->
 <div class="shell" id="shell">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-brand">
       <div class="sidebar-logo">👨‍🏫</div>
@@ -262,12 +351,10 @@ tr:hover td{background:var(--p3);}
     <nav class="sidebar-nav">
       <div class="snav-section">الرئيسية</div>
       <button class="snav-btn active" id="nav0" onclick="goPanel(0)"><span class="snav-icon">🏠</span>الرئيسية</button>
-
       <div class="snav-section">المحتوى</div>
       <button class="snav-btn" id="nav1" onclick="goPanel(1)"><span class="snav-icon">📚</span>موادي الدراسية</button>
       <button class="snav-btn" id="nav2" onclick="goPanel(2)"><span class="snav-icon">📝</span>الدروس والمحتوى</button>
       <button class="snav-btn" id="nav3" onclick="goPanel(3)"><span class="snav-icon">❓</span>الاختبارات</button>
-
       <div class="snav-section">التفاعل</div>
       <button class="snav-btn" id="nav4" onclick="goPanel(4)"><span class="snav-icon">🎯</span>تحدي اليوم</button>
       <button class="snav-btn" id="nav5" onclick="goPanel(5)"><span class="snav-icon">🔴</span>البث المباشر</button>
@@ -278,7 +365,6 @@ tr:hover td{background:var(--p3);}
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
     <div class="topbar">
       <div>
@@ -287,25 +373,25 @@ tr:hover td{background:var(--p3);}
       </div>
       <div style="display:flex;gap:8px;">
         <div class="ctrl-btn" onclick="toggleMode()" id="modeBtn" title="الوضع الليلي">🌙</div>
-        <div class="ctrl-btn" onclick="location.href='index_academy.html'" title="عرض الموقع">👁️</div>
+        <div class="ctrl-btn" onclick="location.href='index.html'" title="عرض الموقع">👁️</div>
       </div>
     </div>
 
     <!-- P0: DASHBOARD -->
     <div class="panel show" id="p0">
-      <div class="stats-row" id="dashStats">
+      <div class="stats-row">
         <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="ds0">0</div><div class="stat-lbl">موادي</div></div>
-        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="ds1">0</div><div class="stat-lbl">إجمالي دروسي</div></div>
-        <div class="stat-card"><div class="stat-icon">❓</div><div class="stat-val" id="ds2">0</div><div class="stat-lbl">اختباراتي</div></div>
+        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="ds1">0</div><div class="stat-lbl">إجمالي الدروس</div></div>
+        <div class="stat-card"><div class="stat-icon">❓</div><div class="stat-val" id="ds2">0</div><div class="stat-lbl">الاختبارات</div></div>
         <div class="stat-card"><div class="stat-icon">🏅</div><div class="stat-val" id="ds3">0</div><div class="stat-lbl">نقاط الإنجاز</div></div>
       </div>
       <div class="card">
         <div class="card-title">⚡ إجراءات سريعة</div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;">
-          <button class="btn btn-primary" onclick="goPanel(1)">➕ إضافة مادة جديدة</button>
-          <button class="btn btn-teal" onclick="goPanel(2)">📝 إضافة درس</button>
-          <button class="btn btn-ghost" onclick="goPanel(4)">🎯 تحدي اليوم</button>
-          <button class="btn btn-ghost" onclick="goPanel(5)">🔴 بث مباشر</button>
+        <div class="quick-actions">
+          <button class="qa-btn qa-1" onclick="goPanel(1)"><span>➕</span><span>مادة جديدة</span></button>
+          <button class="qa-btn qa-2" onclick="goPanel(2)"><span>📝</span><span>إضافة درس</span></button>
+          <button class="qa-btn qa-3" onclick="goPanel(4)"><span>🎯</span><span>تحدي اليوم</span></button>
+          <button class="qa-btn qa-4" onclick="goPanel(5)"><span>🔴</span><span>بث مباشر</span></button>
         </div>
       </div>
     </div>
@@ -315,22 +401,28 @@ tr:hover td{background:var(--p3);}
       <div class="card">
         <div class="card-title">➕ إضافة مادة دراسية جديدة</div>
         <div class="form-row">
-          <div class="form-group" style="max-width:80px;">
+          <div class="form-group" style="max-width:100px;">
             <label class="form-label">أيقونة</label>
-            <input type="text" id="subjIcon" class="form-input" placeholder="📚" style="text-align:center;">
+            <select id="subjIcon" class="form-select">
+              <option value="📚">📚 كتاب</option><option value="🖊️">🖊️ عربي</option>
+              <option value="🇬🇧">🇬🇧 إنجليزي</option><option value="🔢">🔢 رياضيات</option>
+              <option value="🔬">🔬 علوم</option><option value="🎨">🎨 رسم</option>
+              <option value="🌍">🌍 جغرافيا</option><option value="📖">📖 قراءة</option>
+              <option value="🧠">🧠 منطق</option><option value="💻">💻 تكنولوجيا</option>
+            </select>
           </div>
           <div class="form-group">
             <label class="form-label">اسم المادة</label>
             <input type="text" id="subjTitle" class="form-input" placeholder="مثال: اللغة العربية للصف الثالث">
           </div>
-          <div class="form-group" style="max-width:160px;">
+          <div class="form-group" style="max-width:180px;">
             <label class="form-label">التصنيف</label>
             <select id="subjCat" class="form-select">
-              <option value="arabic">🖊️ عربي</option>
-              <option value="english">🇬🇧 إنجليزي</option>
-              <option value="math">🔢 رياضيات</option>
-              <option value="science">🔬 علوم</option>
-              <option value="other">📦 أخرى</option>
+              <option value="arabic">عربي</option>
+              <option value="english">إنجليزي</option>
+              <option value="math">رياضيات</option>
+              <option value="science">علوم</option>
+              <option value="other">أخرى</option>
             </select>
           </div>
         </div>
@@ -342,10 +434,9 @@ tr:hover td{background:var(--p3);}
         </div>
         <button class="btn btn-primary" onclick="addSubject()">💾 نشر المادة للطلاب</button>
       </div>
-
       <div class="card">
-        <div class="card-title">📚 موادي الدراسية <div class="badge" id="subjCountBadge">0</div></div>
-        <div id="subjList"><div class="empty"><div class="empty-icon">📭</div><div>لم تضف أي مادة بعد</div></div></div>
+        <div class="card-title">📚 موادي الدراسية <span class="badge" id="subjCountBadge">0</span></div>
+        <div id="subjList"><div class="empty"><div class="empty-icon">📭</div><div class="empty-text">لم تضف أي مادة بعد</div></div></div>
       </div>
     </div>
 
@@ -356,11 +447,9 @@ tr:hover td{background:var(--p3);}
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">المادة الدراسية</label>
-            <select id="lessonSubj" class="form-select" onchange="onSubjChange()">
-              <option value="">— اختر المادة —</option>
-            </select>
+            <select id="lessonSubj" class="form-select"></select>
           </div>
-          <div class="form-group" style="max-width:160px;">
+          <div class="form-group" style="max-width:180px;">
             <label class="form-label">نوع المحتوى</label>
             <select id="lessonType" class="form-select" onchange="onTypeChange()">
               <option value="lesson">📖 درس نظري</option>
@@ -371,9 +460,15 @@ tr:hover td{background:var(--p3);}
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group" style="max-width:80px;">
-            <label class="form-label">أيقونة</label>
-            <input type="text" id="lessonIcon" class="form-input" placeholder="📖" style="text-align:center;">
+          <div class="form-group" style="max-width:130px;">
+            <label class="form-label">أيقونة الدرس</label>
+            <select id="lessonIcon" class="form-select">
+              <option value="📖">📖 درس</option><option value="🎬">🎬 فيديو</option>
+              <option value="📕">📕 قصة</option><option value="✏️">✏️ تمرين</option>
+              <option value="🧠">🧠 فكر</option><option value="🔢">🔢 حساب</option>
+              <option value="📝">📝 ملاحظات</option><option value="🌟">🌟 مميز</option>
+              <option value="🎯">🎯 هدف</option><option value="💡">💡 فكرة</option>
+            </select>
           </div>
           <div class="form-group">
             <label class="form-label">عنوان الدرس / المحتوى</label>
@@ -386,10 +481,9 @@ tr:hover td{background:var(--p3);}
             <textarea id="lessonDesc" class="form-textarea" placeholder="اكتب محتوى الدرس أو وصفه هنا..."></textarea>
           </div>
         </div>
-        <!-- Video URL field (shows when type=video) -->
         <div class="form-row" id="videoUrlRow" style="display:none;">
           <div class="form-group">
-            <label class="form-label">رابط الفيديو (YouTube أو أي رابط)</label>
+            <label class="form-label">رابط الفيديو</label>
             <input type="url" id="lessonVideoUrl" class="form-input" dir="ltr" placeholder="https://youtube.com/watch?v=...">
           </div>
         </div>
@@ -398,18 +492,15 @@ tr:hover td{background:var(--p3);}
           <button class="btn btn-ghost" onclick="clearLessonForm()">🔄 مسح الحقول</button>
         </div>
       </div>
-
       <div class="card">
-        <div class="card-title">📋 قائمة الدروس <div class="badge" id="lessonCountBadge">0</div></div>
-        <div class="form-row" style="margin-bottom:14px;">
-          <div class="form-group" style="max-width:200px;">
+        <div class="card-title">📋 قائمة الدروس <span class="badge" id="lessonCountBadge">0</span></div>
+        <div class="form-row" style="margin-bottom:16px;">
+          <div class="form-group" style="max-width:240px;">
             <label class="form-label">تصفية حسب المادة</label>
-            <select id="filterLessonSubj" class="form-select" onchange="loadLessons()">
-              <option value="">الكل</option>
-            </select>
+            <select id="filterLessonSubj" class="form-select" onchange="loadLessons()"></select>
           </div>
         </div>
-        <div id="lessonList"><div class="empty"><div class="empty-icon">📭</div><div>لا توجد دروس بعد</div></div></div>
+        <div id="lessonList"><div class="empty"><div class="empty-icon">📭</div><div class="empty-text">لا توجد دروس بعد</div></div></div>
       </div>
     </div>
 
@@ -420,9 +511,7 @@ tr:hover td{background:var(--p3);}
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">المادة / الدرس</label>
-            <select id="quizSubj" class="form-select">
-              <option value="">— اختر المادة —</option>
-            </select>
+            <select id="quizSubj" class="form-select"></select>
           </div>
           <div class="form-group">
             <label class="form-label">عنوان الاختبار</label>
@@ -430,15 +519,14 @@ tr:hover td{background:var(--p3);}
           </div>
         </div>
         <div id="quizQuestions"></div>
-        <div style="display:flex;gap:10px;margin-bottom:14px;">
+        <div style="display:flex;gap:10px;margin-bottom:16px;">
           <button class="btn btn-ghost" onclick="addQuizQ()">➕ إضافة سؤال</button>
         </div>
         <button class="btn btn-primary" onclick="saveQuiz()">💾 نشر الاختبار</button>
       </div>
-
       <div class="card">
         <div class="card-title">📋 الاختبارات المنشورة</div>
-        <div id="quizList"><div class="empty"><div class="empty-icon">❓</div><div>لا توجد اختبارات بعد</div></div></div>
+        <div id="quizList"><div class="empty"><div class="empty-icon">❓</div><div class="empty-text">لا توجد اختبارات بعد</div></div></div>
       </div>
     </div>
 
@@ -451,7 +539,7 @@ tr:hover td{background:var(--p3);}
             <label class="form-label">عنوان التحدي</label>
             <input type="text" id="chalTitle" class="form-input" placeholder="مثال: تحدي المفردات الجديدة">
           </div>
-          <div class="form-group" style="max-width:120px;">
+          <div class="form-group" style="max-width:130px;">
             <label class="form-label">النقاط</label>
             <input type="number" id="chalPts" class="form-input" dir="ltr" value="50" min="1">
           </div>
@@ -467,9 +555,9 @@ tr:hover td{background:var(--p3);}
           <button class="btn btn-danger btn-sm" onclick="saveChallenge(false)">⏸ إخفاء التحدي</button>
         </div>
       </div>
-      <div class="card" id="chalCurrentWrap">
+      <div class="card">
         <div class="card-title">📋 التحدي الحالي</div>
-        <div id="chalCurrent"><div class="empty"><div class="empty-icon">🎯</div><div>لا يوجد تحدٍّ منشور الآن</div></div></div>
+        <div id="chalCurrent"><div class="empty"><div class="empty-icon">🎯</div><div class="empty-text">لا يوجد تحدٍّ منشور</div></div></div>
       </div>
     </div>
 
@@ -478,7 +566,7 @@ tr:hover td{background:var(--p3);}
       <div class="card" id="liveCurrent" style="display:none;">
         <div class="card-title" style="color:var(--rose);">🔴 بثّ نشط الآن</div>
         <div id="liveCurrentContent"></div>
-        <button class="btn btn-danger" onclick="endBroadcast()" style="margin-top:12px;">⏹ إيقاف البث</button>
+        <button class="btn btn-danger" onclick="endBroadcast()" style="margin-top:14px;">⏹ إيقاف البث</button>
       </div>
       <div class="card">
         <div class="card-title">🎬 نشر بثّ مباشر جديد</div>
@@ -487,14 +575,14 @@ tr:hover td{background:var(--p3);}
             <label class="form-label">عنوان البث / الدرس</label>
             <input type="text" id="liveTitle" class="form-input" placeholder="مثال: شرح درس الجبر مباشر">
           </div>
-          <div class="form-group" style="max-width:200px;">
+          <div class="form-group" style="max-width:210px;">
             <label class="form-label">منصة البث</label>
             <select id="livePlatform" class="form-select">
-              <option value="meet">🎥 Google Meet</option>
-              <option value="facebook">📘 Facebook Live</option>
-              <option value="youtube">▶️ YouTube Live</option>
-              <option value="telegram">✈️ Telegram</option>
-              <option value="zoom">💻 Zoom</option>
+              <option value="meet">Google Meet</option>
+              <option value="facebook">Facebook Live</option>
+              <option value="youtube">YouTube Live</option>
+              <option value="telegram">Telegram</option>
+              <option value="zoom">Zoom</option>
             </select>
           </div>
         </div>
@@ -536,7 +624,7 @@ tr:hover td{background:var(--p3);}
       </div>
       <div class="card">
         <div class="card-title">📋 الإعلانات الحالية</div>
-        <div id="annList"><div class="empty"><div class="empty-icon">📢</div><div>لا توجد إعلانات</div></div></div>
+        <div id="annList"><div class="empty"><div class="empty-icon">📢</div><div class="empty-text">لا توجد إعلانات</div></div></div>
       </div>
     </div>
 
@@ -546,7 +634,7 @@ tr:hover td{background:var(--p3);}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc, addDoc, setDoc, updateDoc,
-  deleteDoc, query, where, orderBy, serverTimestamp }
+  deleteDoc, query, where, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
   signOut, onAuthStateChanged }
@@ -560,64 +648,61 @@ const app = initializeApp({
   messagingSenderId:"371101699494",
   appId:"1:371101699494:web:3e79c870941afef5179367"
 });
-const db = getFirestore(app);
-const auth = getAuth(app);
+const db=getFirestore(app), auth=getAuth(app);
+
+/* ═══ CONSTANTS ═══ */
+/* ⚠️ إيميل المدير — يرى كل البيانات */
+const ADMIN_EMAIL='mostfadhrog@gmail.com';
 
 /* ═══ STATE ═══ */
-/* ⚠️ غيّر هذا الإيميل إلى إيميلك الشخصي كمدير — يرى كل البيانات */
-const ADMIN_EMAIL = 'mostfadhrog@gmail.com';
-
-let currentUser = null;
-let teacherProfile = {};
-let mySubjects = [];
-let quizQCount = 0;
-
-/* يتحقق هل المستخدم الحالي هو المدير أم مدرس عادي */
-const isAdmin = () => currentUser && currentUser.email === ADMIN_EMAIL;
+let currentUser=null, teacherProfile={}, mySubjects=[], quizQCount=0;
+let allSubjectsForSelect=[], _populating=false;
+const isAdmin=()=>currentUser&&currentUser.email===ADMIN_EMAIL;
 
 /* ═══ UTILS ═══ */
-const esc = s => String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const catLabel=c=>({arabic:'عربي',english:'إنجليزي',math:'رياضيات',science:'علوم',other:'أخرى'}[c]||c||'عام');
+
 let toastTimer;
-window.showToast = function(msg){
-  const t=document.getElementById('toast'); t.textContent=msg;
-  t.classList.add('show'); clearTimeout(toastTimer);
+window.showToast=function(msg){
+  const t=document.getElementById('toast');t.textContent=msg;
+  t.classList.add('show');clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
 };
 
 /* ═══ THEME ═══ */
-const root = document.documentElement;
+const root=document.documentElement;
 if(localStorage.getItem('adminMode')) root.setAttribute('data-mode',localStorage.getItem('adminMode'));
-document.getElementById('modeBtn').textContent = root.getAttribute('data-mode')==='dark'?'☀️':'🌙';
-window.toggleMode = function(){
+document.getElementById('modeBtn').textContent=root.getAttribute('data-mode')==='dark'?'☀️':'🌙';
+window.toggleMode=function(){
   const m=root.getAttribute('data-mode')==='dark'?'light':'dark';
-  root.setAttribute('data-mode',m); localStorage.setItem('adminMode',m);
+  root.setAttribute('data-mode',m);localStorage.setItem('adminMode',m);
   document.getElementById('modeBtn').textContent=m==='dark'?'☀️':'🌙';
 };
 
 /* ═══ AUTH TABS ═══ */
-window.switchAuthTab = function(tab, btn){
+window.switchAuthTab=function(tab,btn){
   document.querySelectorAll('.gate-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('loginForm').style.display = tab==='login'?'block':'none';
-  document.getElementById('registerForm').style.display = tab==='register'?'block':'none';
+  document.getElementById('loginForm').style.display=tab==='login'?'block':'none';
+  document.getElementById('registerForm').style.display=tab==='register'?'block':'none';
   document.getElementById('gateErr').textContent='';
 };
 
-/* ═══ LOGIN / REGISTER ═══ */
-window.doLogin = async function(){
+/* ═══ LOGIN ═══ */
+window.doLogin=async function(){
   const email=document.getElementById('loginEmail').value.trim();
   const pass=document.getElementById('loginPass').value;
   const err=document.getElementById('gateErr');
   if(!email||!pass){err.textContent='⚠️ أدخل البريد وكلمة السر';return;}
-  try{
-    await signInWithEmailAndPassword(auth,email,pass);
-  }catch(e){
-    err.textContent='❌ '+e.message.replace('Firebase:','').replace('(auth/invalid-credential).','بيانات الدخول غير صحيحة').replace('(auth/user-not-found).','الحساب غير موجود').replace('(auth/wrong-password).','كلمة السر خاطئة');
-  }
+  try{ await signInWithEmailAndPassword(auth,email,pass); }
+  catch(e){ err.textContent='❌ '+(e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'?'بيانات الدخول غير صحيحة':e.message); }
 };
 document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('loginEmail').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
-window.doRegister = async function(){
+/* ═══ REGISTER ═══ */
+window.doRegister=async function(){
   const name=document.getElementById('regName').value.trim();
   const spec=document.getElementById('regSpec').value;
   const email=document.getElementById('regEmail').value.trim();
@@ -628,37 +713,38 @@ window.doRegister = async function(){
   try{
     const cred=await createUserWithEmailAndPassword(auth,email,pass);
     await setDoc(doc(db,'teachers',cred.user.uid),{name,spec,email,createdAt:serverTimestamp()});
-    showToast('✅ تم إنشاء حسابك بنجاح! مرحباً يا '+name);
-  }catch(e){
-    err.textContent='❌ '+(e.code==='auth/email-already-in-use'?'البريد مسجّل من قبل':e.message);
-  }
+    showToast('✅ تم إنشاء حسابك! مرحباً يا '+name);
+  }catch(e){ err.textContent='❌ '+(e.code==='auth/email-already-in-use'?'البريد مسجّل من قبل':e.message); }
 };
 
-window.doLogout = async function(){
-  await signOut(auth);
-};
+window.doLogout=async function(){ await signOut(auth); };
 
 /* ═══ AUTH STATE ═══ */
-onAuthStateChanged(auth, async user=>{
+onAuthStateChanged(auth,async user=>{
   if(user){
     currentUser=user;
     document.getElementById('gate').classList.add('hidden');
     document.getElementById('shell').classList.add('show');
+    /* جلب بيانات المعلم من Firestore */
     const tSnap=await getDoc(doc(db,'teachers',user.uid));
-    teacherProfile=tSnap.exists()?tSnap.data():{name:user.email, spec:'معلم'};
-    document.getElementById('sidebarName').textContent=teacherProfile.name||user.email;
-    document.getElementById('sidebarRole').textContent=specLabel(teacherProfile.spec||'other');
+    teacherProfile=tSnap.exists()?tSnap.data():{name:'',spec:'other'};
+    /* fallback: لو ما فيش اسم مخزن استخدم الجزء الأول من الإيميل */
+    if(!teacherProfile.name) teacherProfile.name=user.email.split('@')[0];
+    document.getElementById('sidebarName').textContent=teacherProfile.name;
+    const specMap={arabic:'معلم عربي',english:'معلم إنجليزي',math:'معلم رياضيات',science:'معلم علوم',other:'معلم'};
+    document.getElementById('sidebarRole').textContent=specMap[teacherProfile.spec]||'معلم';
+    if(isAdmin()){
+      document.getElementById('sidebarRole').innerHTML='<span style="color:#FFD700;font-weight:900;">👑 مدير المنصة</span>';
+    }
     loadDashboard();
     loadSubjects();
-    loadAllSubjectsForSelect(); // تحميل كل مواد السنتر للـ dropdown فور الدخول
+    loadAllSubjectsForSelect();
   }else{
     currentUser=null;
     document.getElementById('gate').classList.remove('hidden');
     document.getElementById('shell').classList.remove('show');
   }
 });
-
-function specLabel(s){const m={arabic:'معلم عربي',english:'معلم إنجليزي',math:'معلم رياضيات',science:'معلم علوم',other:'معلم'};return m[s]||s;}
 
 /* ═══ NAV ═══ */
 const pageMeta=[
@@ -670,7 +756,7 @@ const pageMeta=[
   ['🔴 البث المباشر','شرح مباشر للطلاب'],
   ['📢 الإعلانات','إرسال إشعارات للطلاب'],
 ];
-window.goPanel = function(i){
+window.goPanel=function(i){
   document.querySelectorAll('.panel').forEach((p,k)=>p.classList.toggle('show',k===i));
   document.querySelectorAll('.snav-btn').forEach((b,k)=>b.classList.toggle('active',k===i));
   document.getElementById('pageTitle').textContent=pageMeta[i][0];
@@ -685,290 +771,239 @@ window.goPanel = function(i){
 
 /* ═══ DASHBOARD ═══ */
 async function loadDashboard(){
-  if(!currentUser) return;
+  if(!currentUser)return;
   try{
-    // المدير يرى كل المواد، المدرس يرى موادة فقط
-    const subjSnap = isAdmin()
-      ? await getDocs(collection(db,'subjects'))
-      : await getDocs(query(collection(db,'subjects'),where('teacherId','==',currentUser.uid)));
-    mySubjects=[];
-    let totalLessons=0;
+    const subjSnap=isAdmin()
+      ?await getDocs(collection(db,'subjects'))
+      :await getDocs(query(collection(db,'subjects'),where('teacherId','==',currentUser.uid)));
+    mySubjects=[];let totalLessons=0;
     subjSnap.forEach(d=>{const s={id:d.id,...d.data()};mySubjects.push(s);totalLessons+=(s.lessonsCount||0);});
     document.getElementById('ds0').textContent=mySubjects.length;
     document.getElementById('ds1').textContent=totalLessons;
-    const qSnap = isAdmin()
-      ? await getDocs(collection(db,'quizzes'))
-      : await getDocs(query(collection(db,'quizzes'),where('teacherId','==',currentUser.uid)));
+    const qSnap=isAdmin()
+      ?await getDocs(collection(db,'quizzes'))
+      :await getDocs(query(collection(db,'quizzes'),where('teacherId','==',currentUser.uid)));
     document.getElementById('ds2').textContent=qSnap.size;
     document.getElementById('ds3').textContent=mySubjects.length*10+qSnap.size*5;
-    // أضف شارة "مدير" في الشريط الجانبي لو كان المستخدم المدير
-    if(isAdmin()){
-      const roleEl=document.getElementById('sidebarRole');
-      roleEl.innerHTML='<span style="color:var(--gold);font-weight:900;">👑 مدير المنصة</span>';
-    }
   }catch(e){}
 }
 
+/* ═══ ALL SUBJECTS DROPDOWN ═══ */
+async function loadAllSubjectsForSelect(){
+  if(_populating)return;
+  _populating=true;
+  try{
+    const snap=await getDocs(collection(db,'subjects'));
+    allSubjectsForSelect=[];
+    snap.forEach(d=>allSubjectsForSelect.push({id:d.id,...d.data()}));
+    _populateSelects();
+  }catch(e){}
+  finally{_populating=false;}
+}
+function _populateSelects(){
+  function buildOpts(el,withAll){
+    if(!el)return;
+    const prev=el.value;el.innerHTML='';
+    const def=document.createElement('option');
+    def.value='';def.textContent=withAll?'الكل':'— اختر المادة —';
+    el.appendChild(def);
+    allSubjectsForSelect.forEach(s=>{
+      const opt=document.createElement('option');
+      opt.value=s.id;
+      opt.textContent=(s.title||'بدون عنوان')+(s.teacherName?' ('+s.teacherName+')':'');
+      el.appendChild(opt);
+    });
+    if(prev)el.value=prev;
+  }
+  buildOpts(document.getElementById('lessonSubj'),false);
+  buildOpts(document.getElementById('filterLessonSubj'),true);
+  buildOpts(document.getElementById('quizSubj'),false);
+}
+function populateSubjSelect(){_populateSelects();}
+function populateQuizSubj(){_populateSelects();}
+
 /* ═══ SUBJECTS ═══ */
 async function loadSubjects(){
-  if(!currentUser) return;
+  if(!currentUser)return;
   const list=document.getElementById('subjList');
   try{
-    // المدير يرى كل المواد لكل المدرسين، المدرس يرى موادة فقط
-    const snap = isAdmin()
-      ? await getDocs(collection(db,'subjects'))
-      : await getDocs(query(collection(db,'subjects'),where('teacherId','==',currentUser.uid)));
+    const snap=isAdmin()
+      ?await getDocs(collection(db,'subjects'))
+      :await getDocs(query(collection(db,'subjects'),where('teacherId','==',currentUser.uid)));
     mySubjects=[];
     snap.forEach(d=>mySubjects.push({id:d.id,...d.data()}));
     document.getElementById('subjCountBadge').textContent=mySubjects.length;
     if(!mySubjects.length){
-      list.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div>'+(isAdmin()?'لا توجد مواد في المنصة بعد':'لم تضف أي مادة بعد')+'</div></div>';
-      return;
+      list.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">'+(isAdmin()?'لا توجد مواد في المنصة':'لم تضف أي مادة بعد')+'</div></div>';return;
     }
     list.innerHTML=mySubjects.map(s=>`
       <div class="subj-item">
         <div class="subj-icon">${s.icon||'📚'}</div>
         <div class="subj-info">
-          <div class="subj-name">${esc(s.title)}${isAdmin()&&s.teacherName?` <span style="font-size:11px;color:var(--text3);font-weight:600;">— ${esc(s.teacherName)}</span>`:''}
-          </div>
+          <div class="subj-name">${esc(s.title)}${isAdmin()&&s.teacherName?` <span style="font-size:.88rem;color:var(--text3);">— ${esc(s.teacherName)}</span>`:''}</div>
           <div class="subj-meta">${catLabel(s.category)} · ${s.lessonsCount||0} درس · ${s.storiesCount||0} قصة</div>
         </div>
         <div class="subj-actions">
-          <button class="btn btn-ghost btn-sm" onclick="editSubject('${s.id}')">✏️ تعديل</button>
+          <button class="btn btn-ghost btn-sm" onclick="editSubject('${s.id}')">✏️</button>
           <button class="btn btn-danger btn-sm" onclick="deleteSubject('${s.id}','${esc(s.title)}')">🗑️ حذف</button>
         </div>
       </div>`).join('');
-    // الـ dropdown يتحدث من loadAllSubjectsForSelect فقط لمنع التكرار
-  }catch(e){list.innerHTML='<div class="empty">⚠️ خطأ: '+esc(e.message)+'</div>';}
+  }catch(e){list.innerHTML='<div class="empty">⚠️ '+esc(e.message)+'</div>';}
 }
-function catLabel(c){const m={arabic:'عربي',english:'إنجليزي',math:'رياضيات',science:'علوم',other:'أخرى'};return m[c]||c||'عام';}
 
-window.addSubject = async function(){
-  const icon=document.getElementById('subjIcon').value.trim()||'📚';
+window.addSubject=async function(){
+  const icon=document.getElementById('subjIcon').value||'📚';
   const title=document.getElementById('subjTitle').value.trim();
   const cat=document.getElementById('subjCat').value;
   const desc=document.getElementById('subjDesc').value.trim();
   if(!title){showToast('⚠️ اكتب اسم المادة');return;}
+  /* سحب بيانات المعلم من teacherProfile */
+  const tName=teacherProfile.name||currentUser.email.split('@')[0];
   try{
     await addDoc(collection(db,'subjects'),{
       icon,title,category:cat,desc,
       teacherId:currentUser.uid,
-      teacherName:teacherProfile.name||currentUser.email,
+      teacherEmail:currentUser.email,
+      teacherName:tName,
       lessonsCount:0,storiesCount:0,
       createdAt:serverTimestamp()
     });
     document.getElementById('subjTitle').value='';
     document.getElementById('subjDesc').value='';
-    document.getElementById('subjIcon').value='';
-    showToast('✅ تم نشر المادة للطلاب!');
-    loadSubjects(); loadDashboard(); loadAllSubjectsForSelect();
+    showToast('✅ تم نشر المادة!');
+    loadSubjects();loadDashboard();loadAllSubjectsForSelect();
   }catch(e){showToast('❌ '+e.message);}
 };
-
-window.deleteSubject = async function(id,name){
-  if(!confirm('حذف مادة "'+name+'"؟ سيتم حذف كل دروسها أيضاً. هذا الإجراء لا يمكن التراجع عنه.')) return;
-  try{
-    await deleteDoc(doc(db,'subjects',id));
-    showToast('🗑️ تم حذف المادة'); loadSubjects(); loadDashboard();
-  }catch(e){showToast('❌ '+e.message);}
+window.deleteSubject=async function(id,name){
+  if(!confirm('حذف مادة "'+name+'"؟ لا يمكن التراجع.'))return;
+  try{ await deleteDoc(doc(db,'subjects',id));showToast('🗑️ تم الحذف');loadSubjects();loadDashboard(); }
+  catch(e){showToast('❌ '+e.message);}
 };
-
-window.editSubject = async function(id){
-  const s=mySubjects.find(x=>x.id===id); if(!s) return;
-  const newTitle=prompt('اسم المادة الجديد:',s.title);
-  if(!newTitle) return;
+window.editSubject=async function(id){
+  const s=mySubjects.find(x=>x.id===id);if(!s)return;
+  const newTitle=prompt('اسم المادة الجديد:',s.title);if(!newTitle)return;
   const newDesc=prompt('الوصف الجديد:',s.desc||'');
-  try{
-    await updateDoc(doc(db,'subjects',id),{title:newTitle,desc:newDesc||''});
-    showToast('✅ تم تحديث المادة'); loadSubjects();
-  }catch(e){showToast('❌ '+e.message);}
+  try{ await updateDoc(doc(db,'subjects',id),{title:newTitle,desc:newDesc||''});showToast('✅ تم التحديث');loadSubjects(); }
+  catch(e){showToast('❌ '+e.message);}
 };
-
-let allSubjectsForSelect = [];
-let _populating = false; // حارس لمنع التكرار
-
-async function loadAllSubjectsForSelect(){
-  if(_populating) return; // منع الاستدعاء المتزامن
-  _populating = true;
-  try{
-    const snap = await getDocs(collection(db,'subjects'));
-    allSubjectsForSelect = [];
-    snap.forEach(d => allSubjectsForSelect.push({id:d.id,...d.data()}));
-    _populateSelects();
-  }catch(e){}
-  finally{ _populating = false; }
-}
-
-/* دالة داخلية واحدة تبني الـ select بدون Emoji (تسبب □) */
-function _populateSelects(){
-  const sel  = document.getElementById('lessonSubj');
-  const sel2 = document.getElementById('filterLessonSubj');
-  const sel3 = document.getElementById('quizSubj');
-
-  function buildOpts(el, withAll){
-    if(!el) return;
-    // احفظ القيمة الحالية لإعادة تحديدها بعد إعادة البناء
-    const prev = el.value;
-    el.innerHTML = '';
-    const def = document.createElement('option');
-    def.value = '';
-    def.textContent = withAll ? 'الكل' : '— اختر المادة —';
-    el.appendChild(def);
-    allSubjectsForSelect.forEach(s => {
-      const opt = document.createElement('option');
-      opt.value = s.id;
-      // بدون Emoji — نص فقط عشان ما يظهرش مربعات □
-      opt.textContent = (s.title||'بدون عنوان')
-        + (s.teacherName ? '  (' + s.teacherName + ')' : '');
-      el.appendChild(opt);
-    });
-    // أعد تحديد القيمة السابقة إن كانت لا تزال موجودة
-    if(prev) el.value = prev;
-  }
-
-  buildOpts(sel,  false); // قائمة إضافة درس
-  buildOpts(sel2, true);  // قائمة تصفية الدروس
-  buildOpts(sel3, false); // قائمة إضافة اختبار
-}
-
-/* wrapper متوافق مع الاستدعاءات القديمة */
-function populateSubjSelect(){ _populateSelects(); }
-function populateQuizSubj()  { _populateSelects(); }
 
 /* ═══ LESSONS ═══ */
-window.onTypeChange = function(){
-  const t=document.getElementById('lessonType').value;
-  document.getElementById('videoUrlRow').style.display=t==='video'?'flex':'none';
+window.onTypeChange=function(){
+  document.getElementById('videoUrlRow').style.display=
+    document.getElementById('lessonType').value==='video'?'flex':'none';
 };
-window.onSubjChange = function(){};
-
-window.addLesson = async function(){
+window.addLesson=async function(){
   const subjId=document.getElementById('lessonSubj').value;
   const type=document.getElementById('lessonType').value;
-  const icon=document.getElementById('lessonIcon').value.trim()||'📖';
+  const icon=document.getElementById('lessonIcon').value||'📖';
   const title=document.getElementById('lessonTitle').value.trim();
   const desc=document.getElementById('lessonDesc').value.trim();
   const videoUrl=document.getElementById('lessonVideoUrl').value.trim();
   if(!subjId){showToast('⚠️ اختر المادة الدراسية');return;}
   if(!title){showToast('⚠️ اكتب عنوان الدرس');return;}
+  const tName=teacherProfile.name||currentUser.email.split('@')[0];
   try{
     await addDoc(collection(db,'lessons'),{
       subjectId:subjId,type,icon,title,desc,videoUrl:videoUrl||'',
       teacherId:currentUser.uid,
       teacherEmail:currentUser.email,
-      teacherName:teacherProfile.name||currentUser.email,
+      teacherName:tName,
       createdAt:serverTimestamp()
     });
-    // update lessons count
     const s=mySubjects.find(x=>x.id===subjId);
-    if(s) await updateDoc(doc(db,'subjects',subjId),{
+    if(s)await updateDoc(doc(db,'subjects',subjId),{
       lessonsCount:(s.lessonsCount||0)+1,
       ...(type==='story'?{storiesCount:(s.storiesCount||0)+1}:{})
     });
-    clearLessonForm();
-    showToast('✅ تم نشر الدرس!'); loadLessons(); loadDashboard();
+    clearLessonForm();showToast('✅ تم نشر الدرس!');loadLessons();loadDashboard();
   }catch(e){showToast('❌ '+e.message);}
 };
-
-window.clearLessonForm = function(){
+window.clearLessonForm=function(){
   document.getElementById('lessonTitle').value='';
   document.getElementById('lessonDesc').value='';
   document.getElementById('lessonVideoUrl').value='';
-  document.getElementById('lessonIcon').value='';
 };
-
-window.loadLessons = async function(){
-  if(!currentUser) return;
+window.loadLessons=async function(){
+  if(!currentUser)return;
   const list=document.getElementById('lessonList');
   const filterSubj=document.getElementById('filterLessonSubj').value;
-  list.innerHTML='<div style="color:var(--text3);padding:10px;">⏳ جارٍ التحميل...</div>';
+  list.innerHTML='<div style="color:var(--text3);padding:12px;font-size:1rem;">⏳ جارٍ التحميل...</div>';
   try{
     let q;
     if(isAdmin()){
-      // المدير: يرى كل الدروس بدون تصفية، أو مفلتر بالمادة فقط
-      q = filterSubj
-        ? query(collection(db,'lessons'), where('subjectId','==',filterSubj))
-        : query(collection(db,'lessons'));
-    } else {
-      // المدرس: يرى دروسه الخاصة فقط بناءً على الإيميل
-      q = filterSubj
-        ? query(collection(db,'lessons'), where('teacherEmail','==',currentUser.email), where('subjectId','==',filterSubj))
-        : query(collection(db,'lessons'), where('teacherEmail','==',currentUser.email));
+      q=filterSubj?query(collection(db,'lessons'),where('subjectId','==',filterSubj)):query(collection(db,'lessons'));
+    }else{
+      q=filterSubj
+        ?query(collection(db,'lessons'),where('teacherEmail','==',currentUser.email),where('subjectId','==',filterSubj))
+        :query(collection(db,'lessons'),where('teacherEmail','==',currentUser.email));
     }
-    const snap = await getDocs(q);
+    const snap=await getDocs(q);
     document.getElementById('lessonCountBadge').textContent=snap.size;
-    if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div>لا توجد دروس بعد</div></div>';return;}
-    const rows=[];
-    snap.forEach(d=>rows.push({id:d.id,...d.data()}));
+    if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">لا توجد دروس بعد</div></div>';return;}
+    const rows=[];snap.forEach(d=>rows.push({id:d.id,...d.data()}));
     const typeLabel={lesson:'📖 درس',video:'🎬 فيديو',story:'📕 قصة',exercise:'✏️ تمرين'};
     list.innerHTML=rows.map(r=>{
-      const s=mySubjects.find(x=>x.id===r.subjectId);
+      const s=allSubjectsForSelect.find(x=>x.id===r.subjectId);
       return`<div class="lesson-row">
         <div class="lesson-row-head">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-size:22px;">${r.icon||'📖'}</span>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:26px;">${r.icon||'📖'}</span>
             <div>
-              <div style="font-weight:800;font-size:14px;">${esc(r.title)}</div>
-              <div style="font-size:11px;color:var(--text2);">
+              <div style="font-weight:800;font-size:1.05rem;">${esc(r.title)}</div>
+              <div style="font-size:.9rem;color:var(--text2);">
                 ${typeLabel[r.type]||r.type} · ${s?esc(s.title):'غير محدد'}
                 ${isAdmin()&&r.teacherName?` · <span style="color:var(--gold);">👨‍🏫 ${esc(r.teacherName)}</span>`:''}
               </div>
             </div>
           </div>
-          <div style="display:flex;gap:6px;">
-            <button class="btn btn-danger btn-sm" onclick="deleteLesson('${r.id}','${r.subjectId}','${r.type}')">🗑️ حذف</button>
-          </div>
+          <button class="btn btn-danger btn-sm" onclick="deleteLesson('${r.id}','${r.subjectId}','${r.type}')">🗑️ حذف</button>
         </div>
-        ${r.desc?`<div style="font-size:13px;color:var(--text2);">${esc(r.desc).substring(0,120)}...</div>`:''}
-        ${r.videoUrl?`<a href="${esc(r.videoUrl)}" target="_blank" style="font-size:12px;color:var(--p);direction:ltr;">🔗 ${esc(r.videoUrl).substring(0,50)}...</a>`:''}
+        ${r.desc?`<div style="font-size:.95rem;color:var(--text2);margin-top:4px;">${esc(r.desc).substring(0,140)}...</div>`:''}
+        ${r.videoUrl?`<a href="${esc(r.videoUrl)}" target="_blank" style="font-size:.9rem;color:var(--p);direction:ltr;display:block;margin-top:4px;">🔗 ${esc(r.videoUrl).substring(0,50)}...</a>`:''}
       </div>`;}).join('');
   }catch(e){list.innerHTML='<div class="empty">⚠️ '+esc(e.message)+'</div>';}
 };
-
-window.deleteLesson = async function(id,subjId,type){
-  if(!confirm('حذف هذا الدرس نهائياً؟')) return;
+window.deleteLesson=async function(id,subjId,type){
+  if(!confirm('حذف هذا الدرس نهائياً؟'))return;
   try{
     await deleteDoc(doc(db,'lessons',id));
     const s=mySubjects.find(x=>x.id===subjId);
     if(s){
-      const update={lessonsCount:Math.max(0,(s.lessonsCount||1)-1)};
-      if(type==='story') update.storiesCount=Math.max(0,(s.storiesCount||1)-1);
-      await updateDoc(doc(db,'subjects',subjId),update);
+      const u={lessonsCount:Math.max(0,(s.lessonsCount||1)-1)};
+      if(type==='story')u.storiesCount=Math.max(0,(s.storiesCount||1)-1);
+      await updateDoc(doc(db,'subjects',subjId),u);
     }
-    showToast('🗑️ تم حذف الدرس'); loadLessons(); loadDashboard();
+    showToast('🗑️ تم حذف الدرس');loadLessons();loadDashboard();
   }catch(e){showToast('❌ '+e.message);}
 };
 
 /* ═══ QUIZZES ═══ */
-window.addQuizQ = function(){
+window.addQuizQ=function(){
   quizQCount++;
   const wrap=document.getElementById('quizQuestions');
   const div=document.createElement('div');
-  div.className='lesson-row'; div.id='qq'+quizQCount;
+  div.className='lesson-row';div.id='qq'+quizQCount;
   div.innerHTML=`
     <div class="lesson-row-head">
       <span class="row-num">سؤال ${quizQCount}</span>
-      <button class="btn btn-danger btn-sm" onclick="document.getElementById('qq${quizQCount}').remove()">✕</button>
+      <button class="btn btn-danger btn-sm" onclick="document.getElementById('qq${quizQCount}').remove()">✕ حذف</button>
     </div>
     <div class="form-row"><div class="form-group">
-      <label class="form-label">نص السؤال (إنجليزي أو عربي)</label>
-      <input type="text" class="form-input q-txt" placeholder="What is 2 + 2?">
+      <label class="form-label">نص السؤال</label>
+      <input type="text" class="form-input q-txt" placeholder="ما هو الفاعل في الجملة؟">
     </div></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">الإجابة الصحيحة</label>
-        <input type="text" class="form-input q-ans" dir="ltr" placeholder="4">
-      </div>
-      <div class="form-group"><label class="form-label">إجابات خاطئة (فصلها بفاصلة)</label>
-        <input type="text" class="form-input q-wrong" dir="ltr" placeholder="2, 3, 5">
-      </div>
+        <input type="text" class="form-input q-ans" dir="ltr" placeholder="أحمد"></div>
+      <div class="form-group"><label class="form-label">إجابات خاطئة (فصل بفاصلة)</label>
+        <input type="text" class="form-input q-wrong" dir="ltr" placeholder="محمد, الكرة, يلعب"></div>
     </div>`;
   wrap.appendChild(div);
 };
-
-window.saveQuiz = async function(){
+window.saveQuiz=async function(){
   const subjId=document.getElementById('quizSubj').value;
   const title=document.getElementById('quizTitle').value.trim();
-  if(!subjId||!title){showToast('⚠️ اختر المادة واكتب عنوان الاختبار');return;}
+  if(!subjId||!title){showToast('⚠️ اختر المادة واكتب العنوان');return;}
   const rows=document.querySelectorAll('#quizQuestions .lesson-row');
   const questions=[];
   rows.forEach(r=>{
@@ -980,36 +1015,33 @@ window.saveQuiz = async function(){
       questions.push({q,ans,choices:[ans,...wrong]});
     }
   });
-  if(!questions.length){showToast('⚠️ أضف على الأقل سؤالاً كاملاً');return;}
+  if(!questions.length){showToast('⚠️ أضف سؤالاً كاملاً على الأقل');return;}
+  const tName=teacherProfile.name||currentUser.email.split('@')[0];
   try{
     await addDoc(collection(db,'quizzes'),{
       subjectId:subjId,title,questions,
-      teacherId:currentUser.uid,
+      teacherId:currentUser.uid,teacherEmail:currentUser.email,teacherName:tName,
       createdAt:serverTimestamp()
     });
     document.getElementById('quizTitle').value='';
     document.getElementById('quizQuestions').innerHTML='';
-    quizQCount=0;
-    showToast('✅ تم نشر الاختبار!'); loadQuizList(); loadDashboard();
+    quizQCount=0;showToast('✅ تم نشر الاختبار!');loadQuizList();loadDashboard();
   }catch(e){showToast('❌ '+e.message);}
 };
-
-window.loadQuizList = async function(){
+window.loadQuizList=async function(){
   const list=document.getElementById('quizList');
   try{
-    // المدير يرى كل الاختبارات، المدرس يرى اختباراته فقط
-    const snap = isAdmin()
-      ? await getDocs(collection(db,'quizzes'))
-      : await getDocs(query(collection(db,'quizzes'),where('teacherId','==',currentUser.uid)));
-    if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">❓</div><div>لا توجد اختبارات</div></div>';return;}
-    const rows=[];
-    snap.forEach(d=>rows.push({id:d.id,...d.data()}));
+    const snap=isAdmin()
+      ?await getDocs(collection(db,'quizzes'))
+      :await getDocs(query(collection(db,'quizzes'),where('teacherId','==',currentUser.uid)));
+    if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">❓</div><div class="empty-text">لا توجد اختبارات</div></div>';return;}
+    const rows=[];snap.forEach(d=>rows.push({id:d.id,...d.data()}));
     list.innerHTML=rows.map(r=>{
-      const s=mySubjects.find(x=>x.id===r.subjectId);
+      const s=allSubjectsForSelect.find(x=>x.id===r.subjectId);
       return`<div class="lesson-row">
         <div class="lesson-row-head">
-          <div><div style="font-weight:800;">❓ ${esc(r.title)}</div>
-            <div style="font-size:11px;color:var(--text2);">
+          <div><div style="font-weight:800;font-size:1.05rem;">❓ ${esc(r.title)}</div>
+            <div style="font-size:.9rem;color:var(--text2);">
               ${(r.questions||[]).length} سؤال · ${s?esc(s.title):'غير محدد'}
               ${isAdmin()&&r.teacherName?` · <span style="color:var(--gold);">👨‍🏫 ${esc(r.teacherName)}</span>`:''}
             </div>
@@ -1019,15 +1051,13 @@ window.loadQuizList = async function(){
       </div>`;}).join('');
   }catch(e){list.innerHTML='<div class="empty">⚠️ '+esc(e.message)+'</div>';}
 };
-
-window.deleteQuiz = async function(id){
-  if(!confirm('حذف هذا الاختبار نهائياً؟')) return;
-  await deleteDoc(doc(db,'quizzes',id));
-  showToast('🗑️ تم الحذف'); loadQuizList();
+window.deleteQuiz=async function(id){
+  if(!confirm('حذف هذا الاختبار نهائياً؟'))return;
+  await deleteDoc(doc(db,'quizzes',id));showToast('🗑️ تم الحذف');loadQuizList();
 };
 
 /* ═══ CHALLENGE ═══ */
-window.saveChallenge = async function(active){
+window.saveChallenge=async function(active){
   if(active){
     const title=document.getElementById('chalTitle').value.trim();
     const desc=document.getElementById('chalDesc').value.trim();
@@ -1041,99 +1071,86 @@ window.saveChallenge = async function(active){
   }
   loadChallenge();
 };
-
 async function loadChallenge(){
   const wrap=document.getElementById('chalCurrent');
   try{
     const snap=await getDoc(doc(db,'challenges','today'));
     if(snap.exists()){
       const c=snap.data();
-      wrap.innerHTML=`<div style="background:var(--p3);border-radius:14px;padding:16px;">
-        <div style="font-size:12px;color:var(--p);font-weight:800;margin-bottom:6px;">${c.active?'🟢 نشط':'🔴 مخفي'}</div>
-        <div style="font-weight:800;font-size:15px;margin-bottom:4px;">${esc(c.title||'')}</div>
-        <div style="font-size:13px;color:var(--text2);">${esc(c.description||'')}</div>
-        <div style="margin-top:8px;font-weight:900;color:var(--gold);">🏅 ${c.points||0} نقطة</div>
+      wrap.innerHTML=`<div style="background:var(--p3);border-radius:14px;padding:18px;">
+        <div style="font-size:.95rem;color:var(--p);font-weight:800;margin-bottom:6px;">${c.active?'🟢 نشط الآن':'🔴 مخفي'}</div>
+        <div style="font-weight:900;font-size:1.1rem;margin-bottom:6px;">${esc(c.title||'')}</div>
+        <div style="font-size:1rem;color:var(--text2);">${esc(c.description||'')}</div>
+        <div style="margin-top:10px;font-weight:900;font-size:1.1rem;color:var(--gold);">🏅 ${c.points||0} نقطة</div>
       </div>`;
-    }else{ wrap.innerHTML='<div class="empty"><div class="empty-icon">🎯</div><div>لا يوجد تحدٍّ</div></div>'; }
+    }else{wrap.innerHTML='<div class="empty"><div class="empty-icon">🎯</div><div class="empty-text">لا يوجد تحدٍّ منشور</div></div>';}
   }catch(e){}
 }
 
 /* ═══ BROADCAST ═══ */
 const PLATFORMS={meet:{icon:'🎥',label:'Google Meet'},facebook:{icon:'📘',label:'Facebook'},youtube:{icon:'▶️',label:'YouTube'},telegram:{icon:'✈️',label:'Telegram'},zoom:{icon:'💻',label:'Zoom'}};
-
-window.publishBroadcast = async function(){
+window.publishBroadcast=async function(){
   const title=document.getElementById('liveTitle').value.trim();
   const platform=document.getElementById('livePlatform').value;
   const link=document.getElementById('liveLink').value.trim();
   if(!title||!link||!/^https?:\/\//i.test(link)){showToast('⚠️ أدخل العنوان ورابطاً صحيحاً');return;}
   await setDoc(doc(db,'broadcasts','live'),{title,platform,link,active:true,createdAt:serverTimestamp()});
-  showToast('🔴 تم نشر البث! يظهر فوراً للطلاب'); loadBroadcast();
+  showToast('🔴 تم نشر البث!');loadBroadcast();
 };
-
-window.endBroadcast = async function(){
-  if(!confirm('إيقاف البث الحالي؟')) return;
+window.endBroadcast=async function(){
+  if(!confirm('إيقاف البث الحالي؟'))return;
   await updateDoc(doc(db,'broadcasts','live'),{active:false});
-  showToast('⏹ تم إيقاف البث'); loadBroadcast();
+  showToast('⏹ تم إيقاف البث');loadBroadcast();
 };
-
 async function loadBroadcast(){
   const card=document.getElementById('liveCurrent');
-  const content=document.getElementById('liveCurrentContent');
   try{
     const snap=await getDoc(doc(db,'broadcasts','live'));
     if(snap.exists()&&snap.data().active){
-      const b=snap.data();
-      const p=PLATFORMS[b.platform]||{icon:'🔴',label:b.platform};
-      content.innerHTML=`<div style="font-size:14px;font-weight:800;">${p.icon} ${esc(b.title)}</div>
-        <div style="font-size:12px;color:var(--text2);margin:4px 0;">${p.label}</div>
-        <a href="${esc(b.link)}" target="_blank" style="font-size:12px;color:var(--p);direction:ltr;">${esc(b.link)}</a>`;
+      const b=snap.data();const p=PLATFORMS[b.platform]||{icon:'🔴',label:b.platform};
+      document.getElementById('liveCurrentContent').innerHTML=`
+        <div style="font-size:1.05rem;font-weight:800;">${p.icon} ${esc(b.title)}</div>
+        <div style="font-size:.95rem;color:var(--text2);margin:4px 0;">${p.label}</div>
+        <a href="${esc(b.link)}" target="_blank" style="font-size:.9rem;color:var(--p);direction:ltr;">${esc(b.link)}</a>`;
       card.style.display='block';
-    }else{ card.style.display='none'; }
-  }catch(e){ card.style.display='none'; }
+    }else{card.style.display='none';}
+  }catch(e){card.style.display='none';}
 }
 
 /* ═══ ANNOUNCEMENTS ═══ */
-window.publishAnn = async function(){
+window.publishAnn=async function(){
   const text=document.getElementById('annText').value.trim();
   const type=document.getElementById('annType').value;
   const days=parseInt(document.getElementById('annDays').value)||3;
   if(!text){showToast('⚠️ اكتب نص الإعلان');return;}
   const expiresAt=new Date(Date.now()+days*864e5);
   await addDoc(collection(db,'announcements'),{text,type,expiresAt,teacherId:currentUser.uid,createdAt:serverTimestamp()});
-  document.getElementById('annText').value='';
-  showToast('✅ تم نشر الإعلان!'); loadAnn();
+  document.getElementById('annText').value='';showToast('✅ تم نشر الإعلان!');loadAnn();
 };
-
 async function loadAnn(){
   const list=document.getElementById('annList');
   const icons={info:'ℹ️',success:'🎉',warning:'⚠️'};
   try{
-    const snap=await getDocs(query(collection(db,'announcements'),where('teacherId','==',currentUser.uid)));
-    if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">📢</div><div>لا توجد إعلانات</div></div>';return;}
-    const rows=[];
-    snap.forEach(d=>rows.push({id:d.id,...d.data()}));
+    const snap=isAdmin()
+      ?await getDocs(collection(db,'announcements'))
+      :await getDocs(query(collection(db,'announcements'),where('teacherId','==',currentUser.uid)));
+    if(snap.empty){list.innerHTML='<div class="empty"><div class="empty-icon">📢</div><div class="empty-text">لا توجد إعلانات</div></div>';return;}
+    const rows=[];snap.forEach(d=>rows.push({id:d.id,...d.data()}));
     rows.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
     list.innerHTML=rows.map(r=>`
       <div class="lesson-row">
         <div class="lesson-row-head">
-          <div><div style="font-weight:800;">${icons[r.type]||'ℹ️'} ${esc(r.text)}</div>
-            <div style="font-size:11px;color:var(--text2);margin-top:2px;">ينتهي: ${r.expiresAt?.toDate?r.expiresAt.toDate().toLocaleDateString('ar-EG'):''}</div>
+          <div><div style="font-weight:800;font-size:1rem;">${icons[r.type]||'ℹ️'} ${esc(r.text)}</div>
+            <div style="font-size:.88rem;color:var(--text2);margin-top:2px;">ينتهي: ${r.expiresAt?.toDate?r.expiresAt.toDate().toLocaleDateString('ar-EG'):''}</div>
           </div>
           <button class="btn btn-danger btn-sm" onclick="deleteAnn('${r.id}')">🗑️ حذف</button>
         </div>
       </div>`).join('');
   }catch(e){list.innerHTML='<div class="empty">⚠️ '+esc(e.message)+'</div>';}
 }
-
-window.deleteAnn = async function(id){
-  await deleteDoc(doc(db,'announcements',id));
-  showToast('🗑️ تم حذف الإعلان'); loadAnn();
+window.deleteAnn=async function(id){
+  await deleteDoc(doc(db,'announcements',id));showToast('🗑️ تم الحذف');loadAnn();
 };
-
-/* ═══ KEYBOARD LOGIN ═══ */
-['loginEmail','loginPass'].forEach(id=>{
-  document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-});
 </script>
 </body>
 </html>
