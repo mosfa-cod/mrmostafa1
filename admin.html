@@ -295,24 +295,24 @@ tr:hover td{background:var(--p4);}
     <div class="gate-title">لوحة تحكم المعلم</div>
     <div class="gate-sub">منصة مستر مصطفى التعليمية</div>
     <div class="gate-tabs">
-      <button class="gate-tab active" onclick="switchAuthTab('login',this)">تسجيل الدخول</button>
-      <button class="gate-tab" onclick="switchAuthTab('register',this)">تسجيل معلم جديد</button>
+      <button class="gate-tab active" id="tabLogin">تسجيل الدخول</button>
+      <button class="gate-tab" id="tabRegister">تسجيل معلم جديد</button>
     </div>
     <div id="loginForm">
       <div class="form-group">
         <label class="form-label">البريد الإلكتروني</label>
-        <input type="email" id="loginEmail" class="form-input" dir="ltr" placeholder="teacher@school.com">
+        <input type="email" id="loginEmail" class="form-input" dir="ltr" placeholder="teacher@school.com" autocomplete="email">
       </div>
       <div class="form-group">
         <label class="form-label">كلمة السر</label>
-        <input type="password" id="loginPass" class="form-input" dir="ltr" placeholder="••••••••">
+        <input type="password" id="loginPass" class="form-input" dir="ltr" placeholder="••••••••" autocomplete="current-password">
       </div>
-      <button class="gate-btn" onclick="doLogin()">دخول 🚀</button>
+      <button class="gate-btn" id="loginBtn">دخول 🚀</button>
     </div>
     <div id="registerForm" style="display:none;">
       <div class="form-group">
         <label class="form-label">الاسم الكامل</label>
-        <input type="text" id="regName" class="form-input" placeholder="الأستاذ / الأستاذة ...">
+        <input type="text" id="regName" class="form-input" placeholder="الأستاذ / الأستاذة ..." autocomplete="name">
       </div>
       <div class="form-group">
         <label class="form-label">التخصص</label>
@@ -326,13 +326,13 @@ tr:hover td{background:var(--p4);}
       </div>
       <div class="form-group">
         <label class="form-label">البريد الإلكتروني</label>
-        <input type="email" id="regEmail" class="form-input" dir="ltr" placeholder="teacher@school.com">
+        <input type="email" id="regEmail" class="form-input" dir="ltr" placeholder="teacher@school.com" autocomplete="email">
       </div>
       <div class="form-group">
         <label class="form-label">كلمة السر (6 أحرف فأكثر)</label>
-        <input type="password" id="regPass" class="form-input" dir="ltr" placeholder="••••••••">
+        <input type="password" id="regPass" class="form-input" dir="ltr" placeholder="••••••••" autocomplete="new-password">
       </div>
-      <button class="gate-btn" onclick="doRegister()">إنشاء حساب معلم ✨</button>
+      <button class="gate-btn" id="registerBtn">إنشاء حساب معلم ✨</button>
     </div>
     <div class="gate-err" id="gateErr"></div>
   </div>
@@ -361,7 +361,7 @@ tr:hover td{background:var(--p4);}
       <button class="snav-btn" id="nav6" onclick="goPanel(6)"><span class="snav-icon">📢</span>الإعلانات</button>
     </nav>
     <div class="sidebar-footer">
-      <button class="logout-btn" onclick="doLogout()">🚪 تسجيل الخروج</button>
+      <button class="logout-btn" id="logoutBtn">🚪 تسجيل الخروج</button>
     </div>
   </aside>
 
@@ -680,44 +680,70 @@ window.toggleMode=function(){
   document.getElementById('modeBtn').textContent=m==='dark'?'☀️':'🌙';
 };
 
-/* ═══ AUTH TABS ═══ */
-window.switchAuthTab=function(tab,btn){
-  document.querySelectorAll('.gate-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('loginForm').style.display=tab==='login'?'block':'none';
-  document.getElementById('registerForm').style.display=tab==='register'?'block':'none';
-  document.getElementById('gateErr').textContent='';
-};
-
-/* ═══ LOGIN ═══ */
-window.doLogin=async function(){
+/* ═══ GATE WIRING — addEventListener بدل onclick ═══
+   السبب: module scripts معزولة ولا تضمن توفر window.fn
+   في Incognito أو عند التحميل الآني                    */
+function _doLogin(){
   const email=document.getElementById('loginEmail').value.trim();
   const pass=document.getElementById('loginPass').value;
   const err=document.getElementById('gateErr');
+  err.textContent='';
   if(!email||!pass){err.textContent='⚠️ أدخل البريد وكلمة السر';return;}
-  try{ await signInWithEmailAndPassword(auth,email,pass); }
-  catch(e){ err.textContent='❌ '+(e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'?'بيانات الدخول غير صحيحة':e.message); }
-};
-document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-document.getElementById('loginEmail').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+  const btn=document.getElementById('loginBtn');
+  btn.textContent='⏳ جارٍ الدخول...';btn.disabled=true;
+  signInWithEmailAndPassword(auth,email,pass)
+    .catch(e=>{
+      btn.textContent='دخول 🚀';btn.disabled=false;
+      err.textContent='❌ '+(
+        e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'||e.code==='auth/user-not-found'
+          ?'بيانات الدخول غير صحيحة':e.message);
+    });
+}
 
-/* ═══ REGISTER ═══ */
-window.doRegister=async function(){
+function _doRegister(){
   const name=document.getElementById('regName').value.trim();
   const spec=document.getElementById('regSpec').value;
   const email=document.getElementById('regEmail').value.trim();
   const pass=document.getElementById('regPass').value;
   const err=document.getElementById('gateErr');
+  err.textContent='';
   if(!name||!email||!pass){err.textContent='⚠️ أكمل جميع الحقول';return;}
   if(pass.length<6){err.textContent='⚠️ كلمة السر 6 أحرف على الأقل';return;}
-  try{
-    const cred=await createUserWithEmailAndPassword(auth,email,pass);
-    await setDoc(doc(db,'teachers',cred.user.uid),{name,spec,email,createdAt:serverTimestamp()});
-    showToast('✅ تم إنشاء حسابك! مرحباً يا '+name);
-  }catch(e){ err.textContent='❌ '+(e.code==='auth/email-already-in-use'?'البريد مسجّل من قبل':e.message); }
-};
+  const btn=document.getElementById('registerBtn');
+  btn.textContent='⏳ جارٍ الإنشاء...';btn.disabled=true;
+  createUserWithEmailAndPassword(auth,email,pass)
+    .then(async cred=>{
+      await setDoc(doc(db,'teachers',cred.user.uid),{name,spec,email,createdAt:serverTimestamp()});
+      showToast('✅ تم إنشاء حسابك! مرحباً يا '+name);
+    })
+    .catch(e=>{
+      btn.textContent='إنشاء حساب معلم ✨';btn.disabled=false;
+      err.textContent='❌ '+(e.code==='auth/email-already-in-use'?'البريد مسجّل من قبل':e.message);
+    });
+}
+
+function _switchTab(tab){
+  document.getElementById('loginForm').style.display=tab==='login'?'block':'none';
+  document.getElementById('registerForm').style.display=tab==='register'?'block':'none';
+  document.getElementById('tabLogin').classList.toggle('active',tab==='login');
+  document.getElementById('tabRegister').classList.toggle('active',tab==='register');
+  document.getElementById('gateErr').textContent='';
+}
+
+/* attach listeners بعد تحميل الـ DOM مباشرة */
+document.getElementById('tabLogin').addEventListener('click',()=>_switchTab('login'));
+document.getElementById('tabRegister').addEventListener('click',()=>_switchTab('register'));
+document.getElementById('loginBtn').addEventListener('click',_doLogin);
+document.getElementById('registerBtn').addEventListener('click',_doRegister);
+document.getElementById('loginEmail').addEventListener('keydown',e=>{if(e.key==='Enter')_doLogin();});
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')_doLogin();});
+document.getElementById('regPass').addEventListener('keydown',e=>{if(e.key==='Enter')_doRegister();});
+
+/* نحذف window.doLogin / window.doRegister / window.switchAuthTab القديمة */
 
 window.doLogout=async function(){ await signOut(auth); };
+document.getElementById('logoutBtn').addEventListener('click',()=>signOut(auth));
+
 
 /* ═══ AUTH STATE ═══ */
 onAuthStateChanged(auth,async user=>{
