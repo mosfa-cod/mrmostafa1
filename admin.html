@@ -781,19 +781,34 @@ const pageMeta=[
   ['🎯 تحدي اليوم','تحفيز الطلاب يومياً'],
   ['🔴 البث المباشر','شرح مباشر للطلاب'],
   ['📢 الإعلانات','إرسال إشعارات للطلاب'],
-];
-window.goPanel=function(i){
-  document.querySelectorAll('.panel').forEach((p,k)=>p.classList.toggle('show',k===i));
-  document.querySelectorAll('.snav-btn').forEach((b,k)=>b.classList.toggle('active',k===i));
-  document.getElementById('pageTitle').textContent=pageMeta[i][0];
-  document.getElementById('pageSub').textContent=pageMeta[i][1];
-  if(i===1) loadSubjects();
-  if(i===2){ loadAllSubjectsForSelect(); loadLessons(); }
-  if(i===3){ loadAllSubjectsForSelect(); loadQuizList(); }
-  if(i===4) loadChallenge();
-  if(i===5) loadBroadcast();
-  if(i===6) loadAnn();
-};
+]; function goPanel(i) {
+  document.querySelectorAll('.panel').forEach((p, k) => p.classList.toggle('show', k === i));
+  document.querySelectorAll('.snav-btn').forEach((b, k) => b.classList.toggle('active', k === i));
+  
+  // ضبط جلب النصوص بدقة بناءً على مصفوفة الـ pageMeta الخاصة بك
+  if (pageMeta[i]) {
+    const pTitle = document.getElementById('pageTitle');
+    const pSub = document.getElementById('pageSub');
+    if (pTitle) pTitle.textContent = pageMeta[i][0];
+    if (pSub) pSub.textContent = pageMeta[i][1];
+  }
+
+  if(i === 1) loadSubjects();
+  if(i === 2) { loadAllSubjectsForSelect(); loadLessons(); }
+  if(i === 3) { loadAllSubjectsForSelect(); loadQuizList(); }
+  if(i === 4) loadChallenge();
+  if(i === 5) loadBroadcast();
+  if(i === 6) loadAnn();
+}
+
+// ربط أزرار القائمة الجانبية تلقائياً وفك تجمد المتصفح الخفي
+document.querySelectorAll('.snav-btn').forEach((btn, index) => {
+  btn.setAttribute('onclick', ''); // إزالة الـ onclick القديم لمنع التضارب
+  btn.addEventListener('click', () => goPanel(index));
+});
+
+window.goPanel = goPanel;
+
 
 /* ═══ DASHBOARD ═══ */
 async function loadDashboard(){
